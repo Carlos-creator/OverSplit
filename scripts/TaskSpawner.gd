@@ -1,0 +1,31 @@
+extends Node2D
+
+@export var switch_task_scene: PackedScene
+@export var spawn_area: Rect2 = Rect2(80, 80, 800, 480)
+
+const TASK_COLORS: Array[Color] = [
+	Color.RED,
+	Color.ORANGE,
+	Color.DEEP_PINK,
+	Color.DODGER_BLUE,
+	Color.MEDIUM_PURPLE,
+]
+
+func _ready() -> void:
+	get_node("/root/GameManager").wave_started.connect(_on_wave_started)
+
+func _on_wave_started(wave_number: int) -> void:
+	var count := mini(wave_number + 1, 6)
+	for i in count:
+		await get_tree().create_timer(float(i) * 0.5).timeout
+		_spawn_task()
+
+func _spawn_task() -> void:
+	var task: Node = switch_task_scene.instantiate()
+	task.global_position = Vector2(
+		randf_range(spawn_area.position.x, spawn_area.position.x + spawn_area.size.x),
+		randf_range(spawn_area.position.y, spawn_area.position.y + spawn_area.size.y)
+	)
+	task.task_color = TASK_COLORS[randi() % TASK_COLORS.size()]
+	task.timeout = randf_range(10.0, 20.0)
+	add_child(task)

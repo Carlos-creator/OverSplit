@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://switch_task"]
+
+[ext_resource type="Script" path="res://scripts/SwitchTask.gd" id="1"]
+
+[node name="SwitchTask" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1, 0, 0, 1)
+
+[node name="TimerBar" type="ProgressBar" parent="."]
+offset_left = -24.0
+offset_top = 24.0
+offset_right = 24.0
+offset_bottom = 34.0
+max_value = 15.0
+value = 15.0
+show_percentage = false
+
+[node name="InteractLabel" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -36.0
+offset_right = 30.0
+offset_bottom = -20.0
+text = "[ E ]"
+horizontal_alignment = 1
