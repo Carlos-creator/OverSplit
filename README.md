@@ -203,18 +203,3 @@ sequenceDiagram
 | Movimiento | `ui_up/down/left/right` (WASD + Flechas) |
 
 ---
-
-## Paso de implementación
-
-1. Crear `README.md` en `C:\Users\Carlos\.verdent\verdent-projects\OverSplit\README.md` con todo el contenido descrito arriba.
-
----
-
-## Verificación / DoD
-
-| Paso | Archivo | Verificación |
-|---|---|---|
-| 1 | `README.md` | El archivo existe en la raíz del proyecto con todas las secciones |
-| 1 | `README.md` | El bloque Mermaid de arquitectura renderiza correctamente |
-| 1 | `README.md` | El bloque Mermaid de secuencia renderiza correctamente |
-| 1 | `README.md` | La tabla de eficiencia y las constantes coinciden con los valores reales del código |
