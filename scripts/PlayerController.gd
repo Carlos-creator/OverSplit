@@ -24,12 +24,33 @@ func _physics_process(delta: float) -> void:
 		_process_interaction(delta)
 		if player_index != 0:
 			_handle_ai_movement(delta)
-		velocity = _push_velocity
-		move_and_slide()
+		if _push_velocity.length() > 1.0:
+			var tangent_vel := _compute_orbit_velocity(_push_velocity)
+			velocity = tangent_vel
+			move_and_slide()
+			_clamp_to_interact_target()
 		_push_velocity = _push_velocity.lerp(Vector2.ZERO, 0.35)
 		return
 	_handle_movement(delta)
 	_check_interact_input()
+
+func _compute_orbit_velocity(push: Vector2) -> Vector2:
+	if _interact_target == null or not is_instance_valid(_interact_target):
+		return push
+	var to_target: Vector2 = _interact_target.global_position - global_position
+	if to_target.length() < 0.1:
+		return push
+	var tangent: Vector2 = Vector2(-to_target.y, to_target.x).normalized()
+	var dot := push.normalized().dot(tangent)
+	return tangent * push.length() * sign(dot) if abs(dot) > 0.1 else tangent * push.length()
+
+func _clamp_to_interact_target() -> void:
+	if _interact_target == null or not is_instance_valid(_interact_target):
+		return
+	const ORBIT_RADIUS := 28.0
+	var to_self: Vector2 = global_position - _interact_target.global_position
+	if to_self.length() > ORBIT_RADIUS:
+		global_position = _interact_target.global_position + to_self.normalized() * ORBIT_RADIUS
 
 func _handle_movement(delta: float) -> void:
 	var gm: Node = get_node("/root/GameManager")

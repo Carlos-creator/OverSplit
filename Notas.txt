@@ -1,0 +1,5 @@
+Prueba:
+
+SPACE — debería crear clones sin interferencia con los botones.
+"Vel: x1, x1.5, x2" — cicla con colores: gris → amarillo → naranja.
+">> Saltar oleada" — solo clickeable cuando no hay tareas activas.

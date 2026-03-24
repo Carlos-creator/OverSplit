@@ -14,6 +14,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_pause()
 
 func _pause() -> void:
+	Engine.time_scale = 1.0
 	get_tree().paused = true
 	visible = true
 

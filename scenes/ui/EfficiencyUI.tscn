@@ -9,7 +9,7 @@ script = ExtResource("1")
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 280.0
-offset_bottom = 255.0
+offset_bottom = 320.0
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 offset_left = 8.0
@@ -64,3 +64,16 @@ modulate = Color(0.8, 0.8, 0.8, 1)
 text = "II  PAUSA  [ESC]"
 theme_override_font_sizes/font_size = 11
 custom_minimum_size = Vector2(0, 30)
+focus_mode = 0
+
+[node name="SpeedButton" type="Button" parent="Panel/VBox"]
+text = "Vel: x1"
+theme_override_font_sizes/font_size = 11
+custom_minimum_size = Vector2(0, 28)
+focus_mode = 0
+
+[node name="SkipButton" type="Button" parent="Panel/VBox"]
+text = ">> Saltar oleada"
+theme_override_font_sizes/font_size = 11
+custom_minimum_size = Vector2(0, 28)
+focus_mode = 0

@@ -98,3 +98,6 @@ func _start_wave() -> void:
 	wave += 1
 	emit_signal("wave_started", wave)
 	get_node("/root/AudioManager").play_wave_start()
+
+func skip_wave() -> void:
+	wave_timer = get_current_wave_interval()

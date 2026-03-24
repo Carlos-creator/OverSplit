@@ -10,10 +10,16 @@ extends CanvasLayer
 @onready var wave_timer_bar: ProgressBar = $Panel/VBox/WaveTimerBar
 @onready var hint_label: Label = $Panel/VBox/HintLabel
 @onready var pause_button: Button = $Panel/VBox/PauseButton
+@onready var speed_button: Button = $Panel/VBox/SpeedButton
+@onready var skip_button: Button = $Panel/VBox/SkipButton
 
 const COLOR_GOOD := Color(0.2, 0.9, 0.4)
 const COLOR_MID  := Color(1.0, 0.8, 0.1)
 const COLOR_BAD  := Color(0.9, 0.2, 0.2)
+
+const SPEED_STEPS: Array[float] = [1.0, 1.5, 2.0]
+const SPEED_LABELS: Array[String] = ["x1", "x1.5", "x2"]
+var _speed_index: int = 0
 
 func _ready() -> void:
 	var gm := get_node("/root/GameManager")
@@ -24,6 +30,9 @@ func _ready() -> void:
 	_on_clone_count_changed(1)
 	hint_label.text = "[SPACE] Clonar  [Q] Eliminar clon  [E] Interactuar"
 	pause_button.pressed.connect(_on_pause_button)
+	speed_button.pressed.connect(_on_speed_button)
+	skip_button.pressed.connect(_on_skip_button)
+	_update_speed_button()
 
 func _process(_delta: float) -> void:
 	var gm := get_node("/root/GameManager")
@@ -34,12 +43,12 @@ func _process(_delta: float) -> void:
 	wave_timer_bar.max_value = interval
 	wave_timer_bar.value = remaining
 	_update_difficulty_label(gm)
+	skip_button.disabled = not gm.tasks_active.is_empty()
 
 func _on_efficiency_changed(value: float) -> void:
 	efficiency_bar.value = value * 100.0
 	var pct := int(value * 100)
 	efficiency_label.text = "Eficiencia: %d%%" % pct
-
 	var bar_color: Color
 	if value > 0.6:
 		bar_color = COLOR_GOOD
@@ -47,7 +56,6 @@ func _on_efficiency_changed(value: float) -> void:
 		bar_color = COLOR_MID
 	else:
 		bar_color = COLOR_BAD
-
 	efficiency_bar.add_theme_stylebox_override("fill", _make_fill_style(bar_color))
 	_shake_if_low(value)
 
@@ -82,6 +90,21 @@ func _on_pause_button() -> void:
 	var pause_menu := get_tree().get_root().find_child("PauseMenu", true, false)
 	if pause_menu:
 		pause_menu.toggle_pause()
+
+func _on_speed_button() -> void:
+	_speed_index = (_speed_index + 1) % SPEED_STEPS.size()
+	Engine.time_scale = SPEED_STEPS[_speed_index]
+	_update_speed_button()
+
+func _update_speed_button() -> void:
+	speed_button.text = "Vel: " + SPEED_LABELS[_speed_index]
+	match _speed_index:
+		0: speed_button.modulate = Color(0.85, 0.85, 0.85, 1.0)
+		1: speed_button.modulate = Color(1.0, 0.85, 0.3, 1.0)
+		2: speed_button.modulate = Color(1.0, 0.35, 0.1, 1.0)
+
+func _on_skip_button() -> void:
+	get_node("/root/GameManager").skip_wave()
 
 func _update_difficulty_label(gm: Node) -> void:
 	var label: String = gm.get_difficulty_label()
