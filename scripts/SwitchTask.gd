@@ -6,11 +6,12 @@ signal task_completed(task: Node)
 @export var task_color: Color = Color.RED
 
 var is_complete: bool = false
+var interact_progress: float = 0.0
 var _timer: float = 0.0
-var _activated: bool = false
 
 @onready var body: ColorRect = $Body
 @onready var timer_bar: ProgressBar = $TimerBar
+@onready var interact_bar: ProgressBar = $InteractBar
 @onready var pulse_tween: Tween = null
 
 func _ready() -> void:
@@ -18,6 +19,7 @@ func _ready() -> void:
 	body.color = task_color
 	timer_bar.max_value = timeout
 	timer_bar.value = timeout
+	interact_bar.value = 0
 	_start_pulse()
 
 func _process(delta: float) -> void:
@@ -27,6 +29,14 @@ func _process(delta: float) -> void:
 	timer_bar.value = timeout - _timer
 	if _timer >= timeout:
 		_on_timeout()
+
+func add_interact(amount: float) -> void:
+	if is_complete:
+		return
+	interact_progress = minf(1.0, interact_progress + amount)
+	interact_bar.value = interact_progress * 100.0
+	if interact_progress >= 1.0:
+		complete()
 
 func complete() -> void:
 	if is_complete:

@@ -7,7 +7,7 @@ signal wave_started(wave_number: int)
 
 const MAX_CLONES := 6
 const BASE_SPEED := 180.0
-const BASE_INTERACT_TIME := 1.0
+const BASE_INTERACT_TIME := 2.5
 const WAVE_INTERVAL := 20.0
 const MIN_WAVE_INTERVAL := 7.0
 const MAX_TASKS_PER_WAVE := 8
@@ -18,6 +18,7 @@ var score: int = 0
 var wave: int = 0
 var wave_timer: float = 0.0
 var tasks_active: Array = []
+var task_reservations: Dictionary = {}
 
 func _ready() -> void:
 	_start_wave()
@@ -42,7 +43,7 @@ func remove_clone() -> void:
 	_recalculate_efficiency()
 
 func _recalculate_efficiency() -> void:
-	efficiency = 1.0 / float(clone_count)
+	efficiency = maxf(0.1, 1.0 - float(clone_count - 1) * 0.156)
 	emit_signal("efficiency_changed", efficiency)
 	emit_signal("clone_count_changed", clone_count)
 
@@ -50,7 +51,7 @@ func get_speed() -> float:
 	return BASE_SPEED * efficiency
 
 func get_interact_duration() -> float:
-	return BASE_INTERACT_TIME / efficiency
+	return BASE_INTERACT_TIME
 
 func get_current_wave_interval() -> float:
 	return maxf(MIN_WAVE_INTERVAL, WAVE_INTERVAL - float(wave) * 1.3)
@@ -74,8 +75,20 @@ func register_task(task: Node) -> void:
 
 func unregister_task(task: Node) -> void:
 	tasks_active.erase(task)
+	task_reservations.erase(task)
 	score += 100
 	_check_wave_clear()
+
+func reserve_task(task: Node, player: Node) -> void:
+	task_reservations[task] = player
+
+func release_task(task: Node) -> void:
+	task_reservations.erase(task)
+
+func is_task_available(task: Node, requester: Node) -> bool:
+	if not task_reservations.has(task):
+		return true
+	return task_reservations[task] == requester
 
 func _check_wave_clear() -> void:
 	if tasks_active.is_empty():
