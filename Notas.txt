@@ -1,5 +1,7 @@
-Prueba:
+Cosas a probar:
 
-SPACE — debería crear clones sin interferencia con los botones.
-"Vel: x1, x1.5, x2" — cicla con colores: gris → amarillo → naranja.
-">> Saltar oleada" — solo clickeable cuando no hay tareas activas.
+Olas 1-3: todos los cuadrados del mismo tamaño (work_amount=1).
+Ola 4+: empiezan a aparecer cuadrados más grandes (②/③).
+Glow: cuadrados nuevos brillan más en el borde; se apaga conforme los interactuás.
+Urgencia: cuando queda poco tiempo, el cuadrado empieza a pulsar y el borde cambia naranja → rojo.
+Badge ①②③: aparece dorado cuando un cuadrado necesita más clones de los que tiene asignados; desaparece al asignarlos.

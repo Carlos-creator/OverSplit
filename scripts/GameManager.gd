@@ -101,3 +101,10 @@ func _start_wave() -> void:
 
 func skip_wave() -> void:
 	wave_timer = get_current_wave_interval()
+
+func get_clone_count_for_task(task: Node) -> int:
+	var count := 0
+	for p in get_tree().get_nodes_in_group("players"):
+		if p._interact_target == task or p._next_target == task or p._directed_to == task:
+			count += 1
+	return count

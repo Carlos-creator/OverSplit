@@ -30,4 +30,13 @@ func _spawn_task() -> void:
 	)
 	task.task_color = TASK_COLORS[randi() % TASK_COLORS.size()]
 	task.timeout = gm.get_task_timeout()
+	task.work_amount = _get_work_amount(gm.wave)
 	add_child(task)
+
+func _get_work_amount(wave: int) -> int:
+	if wave <= 3:
+		return 1
+	elif wave <= 6:
+		return 1 + randi() % 2
+	else:
+		return 1 + randi() % 3
