@@ -52,7 +52,7 @@ func _clamp_to_interact_target() -> void:
 	if to_self.length() > ORBIT_RADIUS:
 		global_position = _interact_target.global_position + to_self.normalized() * ORBIT_RADIUS
 
-func _handle_movement(delta: float) -> void:
+func _handle_movement(_delta: float) -> void:
 	var gm: Node = get_node("/root/GameManager")
 	var speed: float = gm.get_speed()
 	var dir := Vector2.ZERO
@@ -80,7 +80,7 @@ func _handle_movement(delta: float) -> void:
 		if other != null and other.has_method("receive_push") and other._interacting:
 			other.receive_push(velocity.normalized() * 28.0)
 
-func _handle_ai_movement(delta: float) -> void:
+func _handle_ai_movement(_delta: float) -> void:
 	if _next_target == null or not is_instance_valid(_next_target):
 		return
 	var gm: Node = get_node("/root/GameManager")

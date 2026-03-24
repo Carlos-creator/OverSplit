@@ -7,7 +7,9 @@ func _ready() -> void:
 	$Panel/VBox/MenuButton.pressed.connect(_on_menu)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_just_pressed("ui_cancel"):
+	if event is InputEventJoypadMotion:
+		return
+	if event.is_action_pressed("ui_cancel", false):
 		if get_tree().paused:
 			_on_resume()
 		else:

@@ -88,7 +88,7 @@ func _update_base_layer(work_left: float) -> void:
 		glow_color.a = glow_alpha
 		border_rect.color = glow_color
 
-func _update_state_layer(time_ratio: float, work_left: float) -> void:
+func _update_state_layer(time_ratio: float, _work_left: float) -> void:
 	if time_ratio > 0.35 or has_directive:
 		if _urgency_active:
 			_deactivate_urgency()

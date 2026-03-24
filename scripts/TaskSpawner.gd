@@ -14,7 +14,7 @@ const TASK_COLORS: Array[Color] = [
 func _ready() -> void:
 	get_node("/root/GameManager").wave_started.connect(_on_wave_started)
 
-func _on_wave_started(wave_number: int) -> void:
+func _on_wave_started(_wave_number: int) -> void:
 	var gm := get_node("/root/GameManager")
 	var count: int = gm.get_task_count()
 	for i in count:
