@@ -9,13 +9,13 @@ script = ExtResource("1")
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 280.0
-offset_bottom = 215.0
+offset_bottom = 255.0
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 272.0
-offset_bottom = 207.0
+offset_bottom = 247.0
 theme_override_constants/separation = 4
 
 [node name="WaveLabel" type="Label" parent="Panel/VBox"]
@@ -59,3 +59,8 @@ theme_override_font_sizes/font_size = 13
 text = "[SPACE] Clonar  [Q] Eliminar  [E] Interactuar"
 theme_override_font_sizes/font_size = 10
 modulate = Color(0.8, 0.8, 0.8, 1)
+
+[node name="PauseButton" type="Button" parent="Panel/VBox"]
+text = "II  PAUSA  [ESC]"
+theme_override_font_sizes/font_size = 11
+custom_minimum_size = Vector2(0, 30)

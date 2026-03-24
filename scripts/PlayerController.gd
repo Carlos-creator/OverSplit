@@ -7,12 +7,14 @@ var _interact_target: Node = null
 var _interacting: bool = false
 var _next_target: Node = null
 var _directed_to: Node = null
+var _push_velocity: Vector2 = Vector2.ZERO
 
 @onready var sprite: ColorRect = $Sprite
 @onready var interact_bar: ProgressBar = $InteractBar
 @onready var clone_label: Label = $CloneLabel
 
 func _ready() -> void:
+	add_to_group("players")
 	sprite.color = color
 	clone_label.text = "P" + str(player_index + 1) if player_index > 0 else "YOU"
 	interact_bar.visible = false
@@ -22,6 +24,9 @@ func _physics_process(delta: float) -> void:
 		_process_interaction(delta)
 		if player_index != 0:
 			_handle_ai_movement(delta)
+		velocity = _push_velocity
+		move_and_slide()
+		_push_velocity = _push_velocity.lerp(Vector2.ZERO, 0.35)
 		return
 	_handle_movement(delta)
 	_check_interact_input()
@@ -41,12 +46,18 @@ func _handle_movement(delta: float) -> void:
 		if target != null:
 			var to_task: Vector2 = target.global_position - global_position
 			if to_task.length() > 32.0:
-				dir = to_task.normalized()
+				var sep := _get_separation_force()
+				dir = (to_task.normalized() + sep * 0.75).normalized()
 			else:
 				_try_start_interaction(target)
 
 	velocity = dir.normalized() * speed
 	move_and_slide()
+	for i in get_slide_collision_count():
+		var col := get_slide_collision(i)
+		var other := col.get_collider()
+		if other != null and other.has_method("receive_push") and other._interacting:
+			other.receive_push(velocity.normalized() * 28.0)
 
 func _handle_ai_movement(delta: float) -> void:
 	if _next_target == null or not is_instance_valid(_next_target):
@@ -145,6 +156,23 @@ func _claim_best_task(gm: Node, exclude: Node) -> Node:
 	if best != null:
 		gm.reserve_task(best, self)
 	return best
+
+func receive_push(push: Vector2) -> void:
+	_push_velocity = (_push_velocity + push).limit_length(50.0)
+
+func _get_separation_force() -> Vector2:
+	var sep := Vector2.ZERO
+	const RADIUS := 52.0
+	for p in get_tree().get_nodes_in_group("players"):
+		if p == self:
+			continue
+		if p._interacting:
+			continue
+		var diff: Vector2 = global_position - p.global_position
+		var dist := diff.length()
+		if dist < RADIUS and dist > 0.5:
+			sep += diff.normalized() * (1.0 - dist / RADIUS)
+	return sep
 
 func _find_nearest_task_for_player() -> Node:
 	var gm: Node = get_node("/root/GameManager")

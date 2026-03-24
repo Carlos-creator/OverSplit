@@ -1,1 +1,2 @@
-Añadido Botón de pausa
+- Mejora en colisión a la hora de clones interactuando y q no dejen pasar
+- Mejora en Menú de pausa

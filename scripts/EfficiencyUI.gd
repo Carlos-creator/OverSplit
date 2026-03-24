@@ -9,6 +9,7 @@ extends CanvasLayer
 @onready var wave_timer_label: Label = $Panel/VBox/WaveTimerLabel
 @onready var wave_timer_bar: ProgressBar = $Panel/VBox/WaveTimerBar
 @onready var hint_label: Label = $Panel/VBox/HintLabel
+@onready var pause_button: Button = $Panel/VBox/PauseButton
 
 const COLOR_GOOD := Color(0.2, 0.9, 0.4)
 const COLOR_MID  := Color(1.0, 0.8, 0.1)
@@ -22,6 +23,7 @@ func _ready() -> void:
 	_on_efficiency_changed(1.0)
 	_on_clone_count_changed(1)
 	hint_label.text = "[SPACE] Clonar  [Q] Eliminar clon  [E] Interactuar"
+	pause_button.pressed.connect(_on_pause_button)
 
 func _process(_delta: float) -> void:
 	var gm := get_node("/root/GameManager")
@@ -75,6 +77,11 @@ func _make_fill_style(color: Color) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
 	s.bg_color = color
 	return s
+
+func _on_pause_button() -> void:
+	var pause_menu := get_tree().get_root().find_child("PauseMenu", true, false)
+	if pause_menu:
+		pause_menu.toggle_pause()
 
 func _update_difficulty_label(gm: Node) -> void:
 	var label: String = gm.get_difficulty_label()
