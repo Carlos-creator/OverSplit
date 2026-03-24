@@ -1,12 +1,5 @@
 # Plan: README.md de OverSplit
 
-## Objetivo
-
-Crear `README.md` en la raíz del proyecto documentando el concepto, reglas, mecánicas, controles, arquitectura técnica, sistemas implementados, estructura de archivos y diagramas Mermaid — todo fiel al estado actual del código.
-
----
-
-## Contenido del README
 
 ### 1. Cabecera
 - Título: **OverSplit**
