@@ -1,15 +1,13 @@
 # OverSplit
 
-<<<<<<< HEAD
-=======
-> *"Cuantas más cosas haces al mismo tiempo, peor las haces."*
+*"Cuantas más cosas haces al mismo tiempo, peor las haces."*
 
 Motor: **Godot 4.6.1** · GDScript · GL Compatibility
 
 ---
 
 ## Concepto
->>>>>>> e2d5427 (v8.0 beta)
+(v8.0 beta)
 
 El jugador puede clonarse para cubrir múltiples tareas en paralelo, pero cada clon reduce la eficiencia global de todos (velocidad, coordinación). El juego exige decidir conscientemente cuántos clones valen la pena para cada situación.
 
