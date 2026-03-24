@@ -1,0 +1,17 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1774229788
+::res://scenes/::1774104458
+Main.tscn::PackedScene::471933::1774099563::0::1::::<><><>0<>0<><>::res://scenes/Player.tscn<>res://scenes/SwitchTask.tscn<>res://scenes/ui/EfficiencyUI.tscn<>res://scripts/CloneManager.gd<>res://scripts/TaskSpawner.gd<>res://scripts/Main.gd
+Player.tscn::PackedScene::696258953::1774099559::0::1::::<><><>0<>0<><>::res://scripts/PlayerController.gd
+SwitchTask.tscn::PackedScene::-1::1774097568::0::1::::<><><>0<>0<><>::res://scripts/SwitchTask.gd
+::res://scenes/ui/::1774104458
+EfficiencyUI.tscn::PackedScene::-1::1774101093::0::1::::<><><>0<>0<><>::res://scripts/EfficiencyUI.gd
+::res://scripts/::1774104485
+AudioManager.gd::GDScript::5460052088390602322::1774101294::0::1::::<>Node<><>0<>0<><>::
+CloneManager.gd::GDScript::9152011564124400658::1774101312::0::1::::<>Node<><>0<>0<><>::
+EfficiencyUI.gd::GDScript::7980636389514283486::1774101136::0::1::::<>CanvasLayer<><>0<>0<><>::
+GameManager.gd::GDScript::6377597883221289011::1774101325::0::1::::<>Node<><>0<>0<><>::
+Main.gd::GDScript::5079890103019200758::1774097596::0::1::::<>Node2D<><>0<>0<><>::
+PlayerController.gd::GDScript::5642657394543110493::1774101331::0::1::::<>CharacterBody2D<><>0<>0<><>::
+SwitchTask.gd::GDScript::586874430167544722::1774101320::0::1::::<>Node2D<><>0<>0<><>::
+TaskSpawner.gd::GDScript::8457413820492879901::1774101141::0::1::::<>Node2D<><>0<>0<><>::
