@@ -280,12 +280,6 @@ sequenceDiagram
 
 ---
 
-## Paso de implementación
-
-1. Crear `C:\Users\Carlos\.verdent\verdent-projects\OverSplit\README.md` con todo el contenido anterior.
-
----
-
 ## Verificación / DoD
 
 | Verificación |
