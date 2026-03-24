@@ -5,6 +5,13 @@
 [node name="SwitchTask" type="Node2D"]
 script = ExtResource("1")
 
+[node name="BorderRect" type="ColorRect" parent="."]
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0, 0, 0, 0)
+
 [node name="Body" type="ColorRect" parent="."]
 offset_left = -20.0
 offset_top = -20.0
@@ -37,3 +44,13 @@ offset_right = 30.0
 offset_bottom = -20.0
 text = "[ E ]"
 horizontal_alignment = 1
+
+[node name="DirectiveLabel" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -52.0
+offset_right = 30.0
+offset_bottom = -38.0
+text = ">> 1"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.2, 1.0, 1.0, 1)
+theme_override_font_sizes/font_size = 11

@@ -6,6 +6,7 @@ extends CharacterBody2D
 var _interact_target: Node = null
 var _interacting: bool = false
 var _next_target: Node = null
+var _directed_to: Node = null
 
 @onready var sprite: ColorRect = $Sprite
 @onready var interact_bar: ProgressBar = $InteractBar
@@ -58,6 +59,13 @@ func _handle_ai_movement(delta: float) -> void:
 		move_and_slide()
 
 func _get_ai_target(gm: Node) -> Node:
+	# Directive tiene prioridad máxima
+	if _directed_to != null:
+		if not is_instance_valid(_directed_to) or _directed_to.is_complete:
+			_directed_to = null
+		else:
+			return _directed_to
+	# Targeting normal
 	if _next_target != null:
 		if not is_instance_valid(_next_target) or _next_target.is_complete:
 			gm.release_task(_next_target)
@@ -69,6 +77,19 @@ func _get_ai_target(gm: Node) -> Node:
 		_next_target = claimed
 		return claimed
 	return _find_nearest_any_task(gm)
+
+func set_directive(task: Node) -> void:
+	var gm := get_node("/root/GameManager")
+	if _next_target != null and _next_target != task:
+		gm.release_task(_next_target)
+		_next_target = null
+	_directed_to = task
+	gm.reserve_task(task, self)
+
+func clear_directive() -> void:
+	if _directed_to != null and is_instance_valid(_directed_to):
+		get_node("/root/GameManager").release_task(_directed_to)
+	_directed_to = null
 
 func _check_interact_input() -> void:
 	if player_index != 0:
@@ -99,7 +120,7 @@ func _process_interaction(delta: float) -> void:
 	_interact_target.add_interact(delta / duration)
 	interact_bar.value = _interact_target.interact_progress * 100.0
 
-	if player_index != 0 and _interact_target.interact_progress >= 0.65 and _next_target == null:
+	if player_index != 0 and _interact_target.interact_progress >= 0.65 and _next_target == null and _directed_to == null:
 		_next_target = _claim_best_task(gm, _interact_target)
 
 func _cancel_interaction() -> void:

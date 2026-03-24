@@ -1,3 +1,1 @@
-
-- mejora ia de clones
-- barra de interactuar combinada para la tarea especifica, sube la rapidez de completarla al haber más de uno interactuando
+Añadido Botón de pausa

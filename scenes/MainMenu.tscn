@@ -31,7 +31,7 @@ horizontal_alignment = 1
 theme_override_font_sizes/font_size = 52
 
 [node name="Tagline" type="Label" parent="CanvasLayer/Panel/VBox"]
-text = "Cuantas más cosas haces al mismo tiempo, peor las haces."
+text = "Cuantas mas cosas haces al mismo tiempo, peor las haces."
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 12
 autowrap_mode = 3

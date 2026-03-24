@@ -8,10 +8,13 @@ signal task_completed(task: Node)
 var is_complete: bool = false
 var interact_progress: float = 0.0
 var _timer: float = 0.0
+var has_directive: bool = false
 
+@onready var border_rect: ColorRect = $BorderRect
 @onready var body: ColorRect = $Body
 @onready var timer_bar: ProgressBar = $TimerBar
 @onready var interact_bar: ProgressBar = $InteractBar
+@onready var directive_label: Label = $DirectiveLabel
 @onready var pulse_tween: Tween = null
 
 func _ready() -> void:
@@ -20,7 +23,35 @@ func _ready() -> void:
 	timer_bar.max_value = timeout
 	timer_bar.value = timeout
 	interact_bar.value = 0
+	directive_label.visible = false
+	border_rect.color = Color(0, 0, 0, 0)
 	_start_pulse()
+
+func get_time_remaining() -> float:
+	return timeout - _timer
+
+func set_directive(count: int) -> void:
+	has_directive = count > 0
+	directive_label.visible = has_directive
+	directive_label.text = ">> " + str(count)
+	if has_directive:
+		_start_border_pulse()
+	else:
+		_stop_border_pulse()
+
+func _start_border_pulse() -> void:
+	border_rect.color = Color(0, 1, 1, 1)
+	var t := create_tween().set_loops()
+	t.tween_property(border_rect, "color:a", 0.2, 0.4)
+	t.tween_property(border_rect, "color:a", 1.0, 0.4)
+	border_rect.set_meta("pulse_tween", t)
+
+func _stop_border_pulse() -> void:
+	if border_rect.has_meta("pulse_tween"):
+		var t: Tween = border_rect.get_meta("pulse_tween")
+		if t:
+			t.kill()
+	border_rect.color = Color(0, 0, 0, 0)
 
 func _process(delta: float) -> void:
 	if is_complete:
