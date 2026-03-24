@@ -2,7 +2,6 @@ extends Node
 
 signal efficiency_changed(value: float)
 signal clone_count_changed(count: int)
-signal game_over()
 signal wave_started(wave_number: int)
 
 const MAX_CLONES := 6

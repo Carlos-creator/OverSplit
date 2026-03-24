@@ -1,26 +1,18 @@
-# Plan: README.md de OverSplit
+# OverSplit
 
-## Objetivo
+> *"Cuantas más cosas haces al mismo tiempo, peor las haces."*
 
-Crear `README.md` en la raíz del proyecto documentando el concepto, reglas, mecánicas, controles, arquitectura técnica, sistemas implementados, estructura de archivos y diagramas Mermaid — todo fiel al estado actual del código.
-
----
-
-## Contenido del README
-
-### 1. Cabecera
-- Título: **OverSplit**
-- Tagline: *"Cuantas más cosas haces al mismo tiempo, peor las haces."*
-- Motor: Godot 4.6.1 · GDScript · GL Compatibility
+Motor: **Godot 4.6.1** · GDScript · GL Compatibility
 
 ---
 
-### 2. Concepto del juego
+## Concepto
+
 El jugador puede clonarse para cubrir múltiples tareas en paralelo, pero cada clon reduce la eficiencia global de todos (velocidad, coordinación). El juego exige decidir conscientemente cuántos clones valen la pena para cada situación.
 
 ---
 
-### 3. Controles
+## Controles
 
 | Acción | Input |
 |---|---|
@@ -34,20 +26,23 @@ El jugador puede clonarse para cubrir múltiples tareas en paralelo, pero cada c
 
 ---
 
-### 4. Mecánicas principales
+## Mecánicas principales
 
-#### Sistema de Clones
+### Sistema de Clones
+
 - Máximo **6 entidades** (jugador + 5 clones).
-- Clones se mueven con IA hacia la tarea más cercana disponible.
+- Los clones se mueven con IA hacia la tarea más cercana disponible.
 - Colores: Cyan, Amarillo, Verde, Naranja, Magenta.
 - Al crear un clon: flash blanco en todos los sprites.
 
-#### Fórmula de Eficiencia
+### Fórmula de Eficiencia
+
 ```
-eficiencia = max(0.1, 1.0 - (n - 1) × 0.156)
+eficiencia = max(0.1,  1.0 − (n − 1) × 0.156)
 ```
+
 | Clones (n) | Eficiencia | Velocidad (px/s) |
-|---|---|---|
+|:---:|:---:|:---:|
 | 1 | 100% | 180 |
 | 2 | 84% | 152 |
 | 3 | 69% | 124 |
@@ -55,25 +50,28 @@ eficiencia = max(0.1, 1.0 - (n - 1) × 0.156)
 | 5 | 38% | 68 |
 | 6 | 22% | 40 |
 
-Solo afecta **velocidad de movimiento**. El tiempo de interacción es fijo (2.5 s base), pero múltiples clones sobre el mismo objetivo acumulan progreso simultáneamente.
+Solo afecta la **velocidad de movimiento**. El tiempo de interacción es fijo (2.5 s base), pero múltiples clones sobre el mismo objetivo acumulan progreso simultáneamente.
 
-#### Interacción colaborativa
+### Interacción colaborativa
+
 - La barra de progreso vive en el **objetivo** (`SwitchTask.interact_progress`), no en el jugador.
 - Cada contribuyente añade `delta / 2.5s` por frame; cuantos más clones interactúen con el mismo objetivo, más rápido se completa.
 
-#### Sistema de Directivas (click)
+### Sistema de Directivas (click)
+
 - **Click izquierdo** sobre un cuadrado: asigna 1 clon más a ese objetivo (cada click suma 1). Los clones más cercanos tienen prioridad.
 - **Click derecho**: limpia todas las directivas del objetivo.
 - El label `>> N` cyan indica cuántos clones tienen directiva activa sobre esa tarea.
 
-#### Comportamiento de Empuje
+### Comportamiento de Empuje
+
 - Los clones en movimiento empujan a los que están interactuando al chocar.
 - El clon empujado **orbita alrededor del objetivo** sin salirse del radio de interacción (28 px).
 - La fuerza de empuje tiene cap de 50 px/s y se amortigua rápidamente.
 
 ---
 
-### 5. Sistema de Oleadas
+## Sistema de Oleadas
 
 | Parámetro | Fórmula |
 |---|---|
@@ -83,9 +81,10 @@ Solo afecta **velocidad de movimiento**. El tiempo de interacción es fijo (2.5 
 | Bonus por ola limpia | `ola × 500 pts` |
 | Puntos por tarea | 100 pts |
 
-#### Dificultad progresiva
+### Dificultad progresiva
+
 | Ola | Etiqueta |
-|---|---|
+|:---:|:---:|
 | 1–2 | Fácil |
 | 3–5 | Normal |
 | 6–9 | Difícil |
@@ -93,32 +92,36 @@ Solo afecta **velocidad de movimiento**. El tiempo de interacción es fijo (2.5 
 
 ---
 
-### 6. Sistema Visual de Tareas (jerárquico)
+## Sistema Visual de Tareas (jerárquico)
 
 Las tareas comunican información mediante 3 capas visuales:
 
-#### Capa Base — siempre activa
+### Capa Base — siempre activa
+
 - **Tamaño**: crece con `work_amount` (1x / 1.35x / 1.7x) y encoge al completarse.
 - **Glow del borde**: más brillante cuanto más trabajo queda; color = versión clara del color de la tarea.
 
-#### Capa Estado — condicional (tiempo < 35%)
+### Capa Estado — condicional (tiempo < 35%)
+
 - Activa **pulso de urgencia** en la escala del cuadrado.
 - Borde cambia a **naranja** (<35% tiempo) → **rojo pulsante** (<15% tiempo).
 
-#### Capa Decisión — inteligente
-- **Badge dorado ①②③** aparece cuando los clones asignados son menos que los recomendados para terminar a tiempo.
-- Se oculta si el jugador ya asignó una directiva manual.
+### Capa Decisión — inteligente
 
-#### `work_amount` por ola
+- **Badge dorado ①②③** aparece cuando los clones asignados son menos que los recomendados para terminar a tiempo.
+- Se oculta automáticamente si el jugador ya asignó una directiva manual.
+
+### `work_amount` por ola
+
 | Ola | Valores posibles |
-|---|---|
+|:---:|:---:|
 | 1–3 | Solo 1 |
 | 4–6 | 1 ó 2 |
 | 7+ | 1, 2 ó 3 |
 
 ---
 
-### 7. HUD
+## HUD
 
 - Barra de eficiencia: verde (>60%) → amarillo (35–60%) → rojo (<35%).
 - Vibración del panel cuando eficiencia < 25%.
@@ -129,14 +132,14 @@ Las tareas comunican información mediante 3 capas visuales:
 
 ---
 
-### 8. Sistema de Audio (procedural)
+## Sistema de Audio (procedural)
 
 Sin archivos de audio externos. Todo sintetizado con `AudioStreamGenerator`:
 
 | Evento | Onda |
 |---|---|
-| Crear clon | Sine sweep 280→720 Hz |
-| Eliminar clon | Sine sweep 520→160 Hz |
+| Crear clon | Sine sweep 280 → 720 Hz |
+| Eliminar clon | Sine sweep 520 → 160 Hz |
 | Tarea completada | Dos notas sine (C5 + E5) |
 | Tarea fallida | Square wave 110 Hz |
 | Nueva ola | Arpegio de 3 notas sine |
@@ -146,14 +149,14 @@ Pool de 10 `AudioStreamPlayer` reutilizables.
 
 ---
 
-### 9. Menú principal y Pausa
+## Menú y Pausa
 
 - **MainMenu**: pantalla de inicio con botón Jugar.
 - **PauseMenu**: accesible con `ESC` o botón HUD. Opciones: Reanudar / Volver al menú. Al pausar, `Engine.time_scale` se resetea a 1.0 automáticamente.
 
 ---
 
-### 10. Estructura del proyecto
+## Estructura del proyecto
 
 ```
 OverSplit/
@@ -181,7 +184,7 @@ OverSplit/
 
 ---
 
-### 11. Arquitectura — Diagrama de dependencias
+## Arquitectura
 
 ```mermaid
 graph TD
@@ -229,12 +232,12 @@ graph TD
 
     UI -- skip_wave --> GM
     UI -- Engine.time_scale --> GODOT[Godot Engine]
-    PAUSE -- time_scale = 1 --> GODOT
+    PAUSE -- time_scale reset --> GODOT
 ```
 
 ---
 
-### 12. Flujo de señales
+## Flujo de señales
 
 ```mermaid
 sequenceDiagram
@@ -259,39 +262,21 @@ sequenceDiagram
     CM->>P: set_directive(task)
     CM->>T: set_directive(count)
 
-    Note over P: Clon/Jugador completa tarea
-    P->>T: add_interact(delta/duration)
+    Note over P: Clon / Jugador completa tarea
+    P->>T: add_interact(delta / duration)
     T->>GM: unregister_task()
     GM->>GM: score += 100
 ```
 
 ---
 
-### 13. Constantes clave (`GameManager.gd`)
+## Constantes clave (`GameManager.gd`)
 
 | Constante | Valor | Descripción |
 |---|---|---|
-| `MAX_CLONES` | 6 | Máximo entidades totales |
+| `MAX_CLONES` | 6 | Máximo de entidades totales |
 | `BASE_SPEED` | 180.0 px/s | Velocidad base |
 | `BASE_INTERACT_TIME` | 2.5 s | Duración base de interacción |
 | `WAVE_INTERVAL` | 20.0 s | Intervalo inicial entre olas |
 | `MIN_WAVE_INTERVAL` | 7.0 s | Intervalo mínimo entre olas |
 | `MAX_TASKS_PER_WAVE` | 8 | Máximo de tareas por ola |
-
----
-
-## Paso de implementación
-
-1. Crear `C:\Users\Carlos\.verdent\verdent-projects\OverSplit\README.md` con todo el contenido anterior.
-
----
-
-## Verificación / DoD
-
-| Verificación |
-|---|
-| El archivo existe en la raíz del proyecto |
-| Todos los valores de constantes y fórmulas coinciden con el código actual |
-| Los diagramas Mermaid renderizan sin errores |
-| La tabla de eficiencia refleja la fórmula `1.0 - (n-1) × 0.156` |
-| La estructura de archivos lista todos los scripts y escenas existentes |
