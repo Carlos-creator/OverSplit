@@ -112,6 +112,7 @@ func _spawn_clone() -> void:
 	_clones.append(clone)
 	if gm.reaction_delay > 0.0:
 		clone.activate_with_delay(gm.reaction_delay)
+	get_node("/root/UpgradeManager").notify_clone_created()
 	get_node("/root/AudioManager").play_clone_create()
 	_flash_all_clones()
 
@@ -120,6 +121,7 @@ func _remove_last_clone() -> void:
 		return
 	var last: Node = _clones.pop_back()
 	last.queue_free()
+	get_node("/root/UpgradeManager").notify_clone_removed()
 	get_node("/root/AudioManager").play_clone_remove()
 	get_node("/root/GameManager").remove_clone()
 

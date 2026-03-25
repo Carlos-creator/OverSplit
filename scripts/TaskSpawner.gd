@@ -11,15 +11,28 @@ const TASK_COLORS: Array[Color] = [
 	Color.MEDIUM_PURPLE,
 ]
 
+var _spawn_queue: int = 0
+var _spawn_interval: float = 0.4
+var _spawn_timer: float = 0.0
+var _pending_wave_work: int = 0
+
 func _ready() -> void:
 	get_node("/root/GameManager").wave_started.connect(_on_wave_started)
 
 func _on_wave_started(_wave_number: int) -> void:
 	var gm := get_node("/root/GameManager")
-	var count: int = gm.get_task_count()
-	for i in count:
-		await get_tree().create_timer(float(i) * 0.4).timeout
+	_pending_wave_work = gm.get_task_count()
+	_spawn_queue += _pending_wave_work
+	_spawn_timer = 0.0
+
+func _process(delta: float) -> void:
+	if _spawn_queue <= 0:
+		return
+	_spawn_timer -= delta
+	if _spawn_timer <= 0.0:
 		_spawn_task()
+		_spawn_queue -= 1
+		_spawn_timer = _spawn_interval
 
 func _spawn_task() -> void:
 	var gm := get_node("/root/GameManager")

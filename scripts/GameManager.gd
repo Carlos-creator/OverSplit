@@ -6,7 +6,7 @@ signal wave_started(wave_number: int)
 signal stress_changed(value: int, max_value: int)
 signal zona_colapso_changed(active: bool)
 
-const MAX_CLONES := 6
+var MAX_CLONES: int = 6
 const BASE_SPEED := 180.0
 const BASE_INTERACT_TIME := 2.5
 const WAVE_INTERVAL := 20.0
@@ -30,10 +30,36 @@ var timeout_penalty: float = 0.0
 var efficiency_penalty: float = 0.0
 var zona_colapso: bool = false
 
+var _game_active: bool = false
+
 func _ready() -> void:
+	pass
+
+func start_game() -> void:
+	_game_active = true
+	MAX_CLONES = 6
+	wave = 0
+	wave_timer = 0.0
+	score = 0
+	stress = 0
+	consecutive_completes = 0
+	reaction_delay = 0.0
+	speed_penalty = 0.0
+	timeout_penalty = 0.0
+	efficiency_penalty = 0.0
+	zona_colapso = false
+	clone_count = 1
+	tasks_active.clear()
+	task_reservations.clear()
+	_recalculate_efficiency()
 	_start_wave()
 
+func stop_game() -> void:
+	_game_active = false
+
 func _process(delta: float) -> void:
+	if not _game_active:
+		return
 	wave_timer += delta
 	if wave_timer >= get_current_wave_interval():
 		wave_timer = 0.0
@@ -53,12 +79,16 @@ func remove_clone() -> void:
 	_recalculate_efficiency()
 
 func _recalculate_efficiency() -> void:
-	efficiency = maxf(0.1, 1.0 - float(clone_count - 1) * 0.156)
+	var base := maxf(0.1, 1.0 - float(clone_count - 1) * 0.156)
+	var um: Node = get_node("/root/UpgradeManager")
+	efficiency = um.get_efficiency(base, clone_count)
 	emit_signal("efficiency_changed", efficiency)
 	emit_signal("clone_count_changed", clone_count)
 
 func get_speed() -> float:
-	return BASE_SPEED * maxf(0.1, efficiency - efficiency_penalty) * (1.0 - speed_penalty)
+	var um: Node = get_node("/root/UpgradeManager")
+	var base := BASE_SPEED * maxf(0.1, efficiency - efficiency_penalty) * (1.0 - speed_penalty)
+	return base * um.get_speed_multiplier(clone_count)
 
 func get_interact_duration() -> float:
 	return BASE_INTERACT_TIME
@@ -89,6 +119,7 @@ func unregister_task(task: Node) -> void:
 	task_reservations.erase(task)
 	score += 100
 	consecutive_completes += 1
+	get_node("/root/UpgradeManager").notify_task_completed(100)
 	if consecutive_completes >= 3 and stress > 0:
 		stress -= 1
 		consecutive_completes = 0
@@ -100,6 +131,7 @@ func on_task_failed(_task: Node) -> void:
 	score -= 200
 	stress = mini(stress + 1, MAX_STRESS)
 	consecutive_completes = 0
+	get_node("/root/UpgradeManager").notify_task_failed()
 	var was_colapso := zona_colapso
 	_apply_debuffs()
 	emit_signal("stress_changed", stress, MAX_STRESS)
