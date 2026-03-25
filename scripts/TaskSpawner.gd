@@ -31,6 +31,8 @@ func _spawn_task() -> void:
 	task.task_color = TASK_COLORS[randi() % TASK_COLORS.size()]
 	task.timeout = gm.get_task_timeout()
 	task.work_amount = _get_work_amount(gm.wave)
+	if gm.zona_colapso:
+		task.work_amount = maxi(task.work_amount, 2)
 	add_child(task)
 
 func _get_work_amount(wave: int) -> int:

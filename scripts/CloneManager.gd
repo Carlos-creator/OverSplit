@@ -110,6 +110,8 @@ func _spawn_clone() -> void:
 	get_parent().add_child(clone)
 	clone.global_position = _original.global_position + Vector2(randf_range(-40, 40), randf_range(-40, 40))
 	_clones.append(clone)
+	if gm.reaction_delay > 0.0:
+		clone.activate_with_delay(gm.reaction_delay)
 	get_node("/root/AudioManager").play_clone_create()
 	_flash_all_clones()
 

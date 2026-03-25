@@ -3,6 +3,8 @@ extends Node
 signal efficiency_changed(value: float)
 signal clone_count_changed(count: int)
 signal wave_started(wave_number: int)
+signal stress_changed(value: int, max_value: int)
+signal zona_colapso_changed(active: bool)
 
 const MAX_CLONES := 6
 const BASE_SPEED := 180.0
@@ -10,6 +12,7 @@ const BASE_INTERACT_TIME := 2.5
 const WAVE_INTERVAL := 20.0
 const MIN_WAVE_INTERVAL := 7.0
 const MAX_TASKS_PER_WAVE := 8
+const MAX_STRESS := 5
 
 var clone_count: int = 1
 var efficiency: float = 1.0
@@ -18,6 +21,14 @@ var wave: int = 0
 var wave_timer: float = 0.0
 var tasks_active: Array = []
 var task_reservations: Dictionary = {}
+
+var stress: int = 0
+var consecutive_completes: int = 0
+var reaction_delay: float = 0.0
+var speed_penalty: float = 0.0
+var timeout_penalty: float = 0.0
+var efficiency_penalty: float = 0.0
+var zona_colapso: bool = false
 
 func _ready() -> void:
 	_start_wave()
@@ -47,7 +58,7 @@ func _recalculate_efficiency() -> void:
 	emit_signal("clone_count_changed", clone_count)
 
 func get_speed() -> float:
-	return BASE_SPEED * efficiency
+	return BASE_SPEED * maxf(0.1, efficiency - efficiency_penalty) * (1.0 - speed_penalty)
 
 func get_interact_duration() -> float:
 	return BASE_INTERACT_TIME
@@ -59,8 +70,8 @@ func get_task_count() -> int:
 	return mini(wave + 1, MAX_TASKS_PER_WAVE)
 
 func get_task_timeout() -> float:
-	var t_min := maxf(5.0, 12.0 - float(wave) * 0.6)
-	var t_max := maxf(8.0, 22.0 - float(wave) * 1.0)
+	var t_min := maxf(3.0, 12.0 - float(wave) * 0.6 - timeout_penalty)
+	var t_max := maxf(5.0, 22.0 - float(wave) * 1.0 - timeout_penalty)
 	return randf_range(t_min, t_max)
 
 func get_difficulty_label() -> String:
@@ -71,12 +82,41 @@ func get_difficulty_label() -> String:
 
 func register_task(task: Node) -> void:
 	tasks_active.append(task)
+	task.task_failed.connect(on_task_failed)
 
 func unregister_task(task: Node) -> void:
 	tasks_active.erase(task)
 	task_reservations.erase(task)
 	score += 100
+	consecutive_completes += 1
+	if consecutive_completes >= 3 and stress > 0:
+		stress -= 1
+		consecutive_completes = 0
+		_apply_debuffs()
+		emit_signal("stress_changed", stress, MAX_STRESS)
 	_check_wave_clear()
+
+func on_task_failed(_task: Node) -> void:
+	score -= 200
+	stress = mini(stress + 1, MAX_STRESS)
+	consecutive_completes = 0
+	var was_colapso := zona_colapso
+	_apply_debuffs()
+	emit_signal("stress_changed", stress, MAX_STRESS)
+	if zona_colapso != was_colapso:
+		emit_signal("zona_colapso_changed", zona_colapso)
+
+func _apply_debuffs() -> void:
+	speed_penalty      = 0.05 if stress >= 1 else 0.0
+	timeout_penalty    = 1.0  if stress >= 2 else 0.0
+	reaction_delay     = 0.3  if stress >= 3 else 0.0
+	efficiency_penalty = 0.10 if stress >= 4 else 0.0
+	var new_zona := stress >= MAX_STRESS
+	if new_zona != zona_colapso:
+		zona_colapso = new_zona
+		emit_signal("zona_colapso_changed", zona_colapso)
+	elif stress < MAX_STRESS:
+		zona_colapso = false
 
 func reserve_task(task: Node, player: Node) -> void:
 	task_reservations[task] = player

@@ -1,6 +1,7 @@
 extends Node2D
 
 signal task_completed(task: Node)
+signal task_failed(task: Node)
 
 @export var timeout: float = 15.0
 @export var task_color: Color = Color.RED
@@ -190,6 +191,7 @@ func _on_timeout() -> void:
 	_deactivate_urgency()
 	get_node("/root/GameManager").unregister_task(self)
 	get_node("/root/AudioManager").play_task_fail()
+	emit_signal("task_failed", self)
 	_play_fail_animation()
 
 func _play_complete_animation() -> void:

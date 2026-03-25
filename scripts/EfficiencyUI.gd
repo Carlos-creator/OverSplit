@@ -8,6 +8,8 @@ extends CanvasLayer
 @onready var difficulty_label: Label = $Panel/VBox/DifficultyLabel
 @onready var wave_timer_label: Label = $Panel/VBox/WaveTimerLabel
 @onready var wave_timer_bar: ProgressBar = $Panel/VBox/WaveTimerBar
+@onready var stress_label: Label = $Panel/VBox/StressLabel
+@onready var stress_bar: ProgressBar = $Panel/VBox/StressBar
 @onready var hint_label: Label = $Panel/VBox/HintLabel
 @onready var pause_button: Button = $Panel/VBox/PauseButton
 @onready var speed_button: Button = $Panel/VBox/SpeedButton
@@ -20,14 +22,19 @@ const COLOR_BAD  := Color(0.9, 0.2, 0.2)
 const SPEED_STEPS: Array[float] = [1.0, 1.5, 2.0]
 const SPEED_LABELS: Array[String] = ["x1", "x1.5", "x2"]
 var _speed_index: int = 0
+var _zona_colapso: bool = false
+var _shake_tween: Tween = null
 
 func _ready() -> void:
 	var gm := get_node("/root/GameManager")
 	gm.efficiency_changed.connect(_on_efficiency_changed)
 	gm.clone_count_changed.connect(_on_clone_count_changed)
 	gm.wave_started.connect(_on_wave_started)
+	gm.stress_changed.connect(_on_stress_changed)
+	gm.zona_colapso_changed.connect(_on_zona_colapso_changed)
 	_on_efficiency_changed(1.0)
 	_on_clone_count_changed(1)
+	_on_stress_changed(0, gm.MAX_STRESS)
 	hint_label.text = "[SPACE] Clonar  [Q] Eliminar clon  [E] Interactuar"
 	pause_button.pressed.connect(_on_pause_button)
 	speed_button.pressed.connect(_on_speed_button)
@@ -57,7 +64,8 @@ func _on_efficiency_changed(value: float) -> void:
 	else:
 		bar_color = COLOR_BAD
 	efficiency_bar.add_theme_stylebox_override("fill", _make_fill_style(bar_color))
-	_shake_if_low(value)
+	if not _zona_colapso:
+		_shake_if_low(value)
 
 func _on_clone_count_changed(count: int) -> void:
 	clone_label.text = "Clones: %d / %d" % [count, get_node("/root/GameManager").MAX_CLONES]
@@ -65,6 +73,49 @@ func _on_clone_count_changed(count: int) -> void:
 func _on_wave_started(wave_number: int) -> void:
 	wave_label.text = "Ola: %d" % wave_number
 	_flash_wave_label()
+
+func _on_stress_changed(value: int, max_value: int) -> void:
+	stress_bar.max_value = max_value
+	stress_bar.value = value
+	if value == 0:
+		stress_label.text = "Estres: 0/%d" % max_value
+		stress_label.modulate = Color(0.8, 0.8, 0.8, 1)
+		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(0.3, 0.8, 0.3)))
+	elif value <= 2:
+		stress_label.text = "Estres: %d/%d" % [value, max_value]
+		stress_label.modulate = Color(1.0, 0.85, 0.2, 1)
+		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(0.9, 0.7, 0.1)))
+	elif value <= 4:
+		stress_label.text = "Estres: %d/%d  !" % [value, max_value]
+		stress_label.modulate = Color(1.0, 0.4, 0.1, 1)
+		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(0.9, 0.3, 0.1)))
+	else:
+		stress_label.text = "!! ZONA CRITICA !!"
+		stress_label.modulate = Color(1.0, 0.1, 0.1, 1)
+		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(1.0, 0.05, 0.05)))
+
+func _on_zona_colapso_changed(active: bool) -> void:
+	_zona_colapso = active
+	if active:
+		_start_continuous_shake()
+	else:
+		_stop_continuous_shake()
+
+func _start_continuous_shake() -> void:
+	if _shake_tween and _shake_tween.is_running():
+		return
+	_shake_tween = create_tween().set_loops()
+	_shake_tween.tween_property($Panel, "position:x", 5.0, 0.05)
+	_shake_tween.tween_property($Panel, "position:x", -5.0, 0.05)
+	_shake_tween.tween_property($Panel, "position:x", 3.0, 0.04)
+	_shake_tween.tween_property($Panel, "position:x", -3.0, 0.04)
+	_shake_tween.tween_property($Panel, "position:x", 0.0, 0.04)
+
+func _stop_continuous_shake() -> void:
+	if _shake_tween:
+		_shake_tween.kill()
+		_shake_tween = null
+	$Panel.position.x = 0.0
 
 func _flash_wave_label() -> void:
 	var t := create_tween()

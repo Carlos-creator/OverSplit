@@ -9,7 +9,7 @@ script = ExtResource("1")
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 280.0
-offset_bottom = 320.0
+offset_bottom = 370.0
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 offset_left = 8.0
@@ -54,6 +54,17 @@ theme_override_font_sizes/font_size = 13
 [node name="ScoreLabel" type="Label" parent="Panel/VBox"]
 text = "Score: 0"
 theme_override_font_sizes/font_size = 13
+
+[node name="StressLabel" type="Label" parent="Panel/VBox"]
+text = "Estres: 0/5"
+theme_override_font_sizes/font_size = 13
+modulate = Color(0.8, 0.8, 0.8, 1)
+
+[node name="StressBar" type="ProgressBar" parent="Panel/VBox"]
+custom_minimum_size = Vector2(0, 14)
+max_value = 5.0
+value = 0.0
+show_percentage = false
 
 [node name="HintLabel" type="Label" parent="Panel/VBox"]
 text = "[SPACE] Clonar  [Q] Eliminar  [E] Interactuar"

@@ -8,6 +8,8 @@ var _interacting: bool = false
 var _next_target: Node = null
 var _directed_to: Node = null
 var _push_velocity: Vector2 = Vector2.ZERO
+var _activation_timer: float = 0.0
+var _activation_duration: float = 0.0
 
 @onready var sprite: ColorRect = $Sprite
 @onready var interact_bar: ProgressBar = $InteractBar
@@ -19,7 +21,26 @@ func _ready() -> void:
 	clone_label.text = "P" + str(player_index + 1) if player_index > 0 else "YOU"
 	interact_bar.visible = false
 
+func activate_with_delay(delay: float) -> void:
+	_activation_timer = delay
+	_activation_duration = delay
+	queue_redraw()
+
+func _draw() -> void:
+	if _activation_timer <= 0.0 or _activation_duration <= 0.0:
+		return
+	var ratio := _activation_timer / _activation_duration
+	draw_arc(Vector2.ZERO, 14.0, -PI / 2.0, -PI / 2.0 + TAU * ratio, 32, Color(1.0, 1.0, 1.0, 0.55), 3.5)
+
 func _physics_process(delta: float) -> void:
+	if _activation_timer > 0.0:
+		_activation_timer -= delta
+		queue_redraw()
+		if _activation_timer <= 0.0:
+			_activation_timer = 0.0
+			queue_redraw()
+		return
+
 	if _interacting:
 		_process_interaction(delta)
 		if player_index != 0:
@@ -91,13 +112,13 @@ func _handle_ai_movement(_delta: float) -> void:
 		move_and_slide()
 
 func _get_ai_target(gm: Node) -> Node:
-	# Directive tiene prioridad máxima
+	if gm.zona_colapso and randf() < 0.002:
+		return _find_random_task(gm)
 	if _directed_to != null:
 		if not is_instance_valid(_directed_to) or _directed_to.is_complete:
 			_directed_to = null
 		else:
 			return _directed_to
-	# Targeting normal
 	if _next_target != null:
 		if not is_instance_valid(_next_target) or _next_target.is_complete:
 			gm.release_task(_next_target)
@@ -109,6 +130,15 @@ func _get_ai_target(gm: Node) -> Node:
 		_next_target = claimed
 		return claimed
 	return _find_nearest_any_task(gm)
+
+func _find_random_task(gm: Node) -> Node:
+	var available: Array = []
+	for task in gm.tasks_active:
+		if not task.is_complete:
+			available.append(task)
+	if available.is_empty():
+		return null
+	return available[randi() % available.size()]
 
 func set_directive(task: Node) -> void:
 	var gm := get_node("/root/GameManager")
@@ -146,12 +176,10 @@ func _process_interaction(delta: float) -> void:
 	if _interact_target == null or not is_instance_valid(_interact_target) or _interact_target.is_complete:
 		_cancel_interaction()
 		return
-
 	var gm: Node = get_node("/root/GameManager")
 	var duration: float = gm.get_interact_duration()
 	_interact_target.add_interact(delta / duration)
 	interact_bar.value = _interact_target.interact_progress * 100.0
-
 	if player_index != 0 and _interact_target.interact_progress >= 0.65 and _next_target == null and _directed_to == null:
 		_next_target = _claim_best_task(gm, _interact_target)
 
