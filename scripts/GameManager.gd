@@ -14,6 +14,9 @@ const MIN_WAVE_INTERVAL := 7.0
 const MAX_TASKS_PER_WAVE := 8
 const MAX_STRESS := 5
 
+const MAP_MIN := Vector2(0, 0)
+const MAP_MAX := Vector2(960, 540)
+
 var clone_count: int = 1
 var efficiency: float = 1.0
 var score: int = 0

@@ -1,0 +1,6 @@
+res://scenes/MainMenu.tscn
+res://scripts/Main.gd
+res://scripts/GameManager.gd
+res://scripts/PauseMenu.gd
+res://scripts/PlayerController.gd
+res://scripts/TaskSpawner.gd

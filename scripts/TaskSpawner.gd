@@ -17,7 +17,13 @@ var _spawn_timer: float = 0.0
 var _pending_wave_work: int = 0
 
 func _ready() -> void:
-	get_node("/root/GameManager").wave_started.connect(_on_wave_started)
+	var gm := get_node("/root/GameManager")
+	spawn_area = Rect2(
+		gm.MAP_MIN,
+		gm.MAP_MAX - gm.MAP_MIN
+	)
+	gm.wave_started.connect(_on_wave_started)
+
 
 func _on_wave_started(_wave_number: int) -> void:
 	var gm := get_node("/root/GameManager")

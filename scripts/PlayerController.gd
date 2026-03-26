@@ -50,9 +50,11 @@ func _physics_process(delta: float) -> void:
 			velocity = tangent_vel
 			move_and_slide()
 			_clamp_to_interact_target()
+		global_position = global_position.clamp(GameManager.MAP_MIN, GameManager.MAP_MAX)
 		_push_velocity = _push_velocity.lerp(Vector2.ZERO, 0.35)
 		return
 	_handle_movement(delta)
+	global_position = global_position.clamp(GameManager.MAP_MIN, GameManager.MAP_MAX)
 	_check_interact_input()
 
 func _compute_orbit_velocity(push: Vector2) -> Vector2:
@@ -159,7 +161,9 @@ func _check_interact_input() -> void:
 	if Input.is_action_just_pressed("interact"):
 		var nearest := _find_nearest_task_for_player()
 		if nearest:
-			_try_start_interaction(nearest)
+			var dist := global_position.distance_to(nearest.global_position)
+			if dist < 55.0:
+				_try_start_interaction(nearest)
 
 func _try_start_interaction(task: Node) -> void:
 	if task.is_complete:

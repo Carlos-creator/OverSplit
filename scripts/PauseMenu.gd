@@ -34,8 +34,8 @@ func _on_resume() -> void:
 func _on_menu() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
-	get_node("/root/GameManager").stop_game()
-	get_node("/root/UpgradeManager").reset_run()
+	GameManager.stop_game()
+	UpgradeManager.reset_run()
 	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
 
 func _populate_upgrades() -> void:
