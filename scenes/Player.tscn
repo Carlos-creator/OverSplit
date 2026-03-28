@@ -1,26 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://player"]
+[gd_scene format=3 uid="uid://player"]
 
-[ext_resource type="Script" path="res://scripts/PlayerController.gd" id="1"]
+[ext_resource type="Script" uid="uid://3fx8bmp0uv8e" path="res://scripts/PlayerController.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 32)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=1346508821]
 script = ExtResource("1")
-collision_layer = 1
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1376641650]
 shape = SubResource("1")
 
-[node name="Sprite" type="ColorRect" parent="."]
+[node name="Sprite" type="ColorRect" parent="." unique_id=1925470857]
 offset_left = -16.0
 offset_top = -16.0
 offset_right = 16.0
 offset_bottom = 16.0
-color = Color(1, 1, 1, 1)
 
-[node name="CloneLabel" type="Label" parent="."]
+[node name="CloneLabel" type="Label" parent="." unique_id=1622200711]
 offset_left = -20.0
 offset_top = -32.0
 offset_right = 20.0
@@ -29,11 +26,9 @@ text = "YOU"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="InteractBar" type="ProgressBar" parent="."]
+[node name="InteractBar" type="ProgressBar" parent="." unique_id=1408582051]
 offset_left = -20.0
 offset_top = 18.0
 offset_right = 20.0
 offset_bottom = 28.0
-max_value = 100.0
-value = 0.0
 show_percentage = false

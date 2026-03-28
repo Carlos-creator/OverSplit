@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://qpgnq4c10jw0"]
+
+[ext_resource type="Script" uid="uid://bateo3ho1on1c" path="res://scripts/GameOver.gd" id="1_kp3qx"]
+
+[node name="GameOverUI" type="CanvasLayer" unique_id=124854211]
+process_mode = 3
+layer = 10
+script = ExtResource("1_kp3qx")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=561257378]
+custom_minimum_size = Vector2(960, 540)
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="Panel" type="Panel" parent="." unique_id=513064542]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -190.0
+offset_right = 200.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=400898437]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 40.0
+offset_right = 380.0
+offset_bottom = 340.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1362140196]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "GAME OVER"
+
+[node name="ScoreLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1630861365]
+layout_mode = 2
+text = "Score: 0"
+
+[node name="ButtonReplay" type="Button" parent="Panel/VBoxContainer" unique_id=625081193]
+layout_mode = 2
+text = "Volver a jugar"
+
+[node name="ButtonMenu" type="Button" parent="Panel/VBoxContainer" unique_id=207510942]
+layout_mode = 2
+text = "Menú principal"

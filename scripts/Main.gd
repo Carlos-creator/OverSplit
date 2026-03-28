@@ -1,6 +1,8 @@
 extends Node2D
 
 func _ready() -> void:
+	get_tree().paused = false
+	get_node("/root/GameManager").score = 0
 	var original := $Player/OriginalPlayer
 	$CloneManager.register_original(original)
 	get_node("/root/GameManager").start_game()

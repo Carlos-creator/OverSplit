@@ -179,9 +179,9 @@ func complete() -> void:
 		return
 	is_complete = true
 	_deactivate_urgency()
-	get_node("/root/GameManager").unregister_task(self)
-	get_node("/root/AudioManager").play_task_complete()
 	emit_signal("task_completed", self)
+	get_node("/root/GameManager").on_task_completed(self)
+	get_node("/root/AudioManager").play_task_complete()
 	_play_complete_animation()
 
 func _on_timeout() -> void:

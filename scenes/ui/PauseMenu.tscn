@@ -1,64 +1,68 @@
-[gd_scene load_steps=2 format=3 uid="uid://pausemenu"]
+[gd_scene format=3 uid="uid://pausemenu"]
 
-[ext_resource type="Script" path="res://scripts/PauseMenu.gd" id="1"]
+[ext_resource type="Script" uid="uid://cxl608twqly0y" path="res://scripts/PauseMenu.gd" id="1"]
 
-[node name="PauseMenu" type="CanvasLayer"]
-script = ExtResource("1")
+[node name="PauseMenu" type="CanvasLayer" unique_id=479941124]
 layer = 10
+script = ExtResource("1")
 
-[node name="Overlay" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="." unique_id=1929324965]
 offset_right = 960.0
 offset_bottom = 540.0
 color = Color(0, 0, 0, 0.55)
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=1387175817]
 offset_left = 280.0
 offset_top = 80.0
 offset_right = 680.0
 offset_bottom = 460.0
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 388.0
-offset_bottom = 368.0
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=279122044]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/VBox"]
+[node name="Title" type="Label" parent="Panel/VBox" unique_id=157698655]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
 text = "PAUSA"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 28
 
-[node name="ResumeButton" type="Button" parent="Panel/VBox"]
-text = "CONTINUAR"
-theme_override_font_sizes/font_size = 16
+[node name="ResumeButton" type="Button" parent="Panel/VBox" unique_id=1686371567]
 custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 16
+text = "CONTINUAR"
 
-[node name="MenuButton" type="Button" parent="Panel/VBox"]
-text = "MENU PRINCIPAL"
-theme_override_font_sizes/font_size = 12
-custom_minimum_size = Vector2(0, 32)
+[node name="MenuButton" type="Button" parent="Panel/VBox" unique_id=639352622]
 modulate = Color(0.8, 0.8, 0.8, 1)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "MENU PRINCIPAL"
 
-[node name="Separator" type="HSeparator" parent="Panel/VBox"]
+[node name="Separator" type="HSeparator" parent="Panel/VBox" unique_id=1869893733]
+layout_mode = 2
 
-[node name="UpgradesTitle" type="Label" parent="Panel/VBox"]
-text = "Mejoras activas"
+[node name="UpgradesTitle" type="Label" parent="Panel/VBox" unique_id=892055159]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(1.0, 0.85, 0.2, 1)
+text = "Mejoras activas"
 
-[node name="UpgradesScroll" type="ScrollContainer" parent="Panel/VBox"]
+[node name="UpgradesScroll" type="ScrollContainer" parent="Panel/VBox" unique_id=1296123973]
 custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
 size_flags_vertical = 3
 
-[node name="UpgradesList" type="VBoxContainer" parent="Panel/VBox/UpgradesScroll"]
+[node name="UpgradesList" type="VBoxContainer" parent="Panel/VBox/UpgradesScroll" unique_id=339862709]
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="NoUpgradesLabel" type="Label" parent="Panel/VBox"]
-name = "NoUpgradesLabel"
-text = "Ninguna mejora elegida aún"
-theme_override_font_sizes/font_size = 11
+[node name="NoUpgradesLabel" type="Label" parent="Panel/VBox" unique_id=1913178774]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "Ninguna mejora elegida aún"

@@ -17,6 +17,11 @@ const MAX_STRESS := 5
 const MAP_MIN := Vector2(0, 0)
 const MAP_MAX := Vector2(960, 540)
 
+# Mecanica para perder
+const COLLAPSE_TIME := 10.0
+var collapse_progress: float = 0.0
+const GameOverScene = preload("res://scenes/ui/GameOver.tscn")
+
 var clone_count: int = 1
 var efficiency: float = 1.0
 var score: int = 0
@@ -60,6 +65,16 @@ func start_game() -> void:
 func stop_game() -> void:
 	_game_active = false
 
+func _game_over() -> void:
+	if not _game_active:
+		return
+	_game_active = false
+	get_tree().paused = true
+	var go = GameOverScene.instantiate()
+	go.process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().root.add_child(go)
+	go.setup(score)
+
 func _process(delta: float) -> void:
 	if not _game_active:
 		return
@@ -67,6 +82,14 @@ func _process(delta: float) -> void:
 	if wave_timer >= get_current_wave_interval():
 		wave_timer = 0.0
 		_start_wave()
+		
+	if stress == MAX_STRESS:
+		collapse_progress += delta / COLLAPSE_TIME
+	else:
+		collapse_progress -= delta / COLLAPSE_TIME
+	collapse_progress = clamp(collapse_progress, 0.0, 1.0)
+	if collapse_progress >= 1.0:
+		_game_over()
 
 func add_clone() -> bool:
 	if clone_count >= MAX_CLONES:
@@ -120,15 +143,15 @@ func register_task(task: Node) -> void:
 func unregister_task(task: Node) -> void:
 	tasks_active.erase(task)
 	task_reservations.erase(task)
+
+func on_task_completed(task: Node) -> void:
 	score += 100
-	consecutive_completes += 1
-	get_node("/root/UpgradeManager").notify_task_completed(100)
-	if consecutive_completes >= 3 and stress > 0:
+	if stress > 0:
 		stress -= 1
-		consecutive_completes = 0
-		_apply_debuffs()
-		emit_signal("stress_changed", stress, MAX_STRESS)
-	_check_wave_clear()
+	consecutive_completes += 1
+	_apply_debuffs()
+	emit_signal("stress_changed", stress, MAX_STRESS)
+	unregister_task(task)
 
 func on_task_failed(_task: Node) -> void:
 	score -= 200
