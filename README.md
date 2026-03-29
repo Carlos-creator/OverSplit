@@ -6,6 +6,11 @@
 
 ---
 
+## Temática
+
+> *"El que mucho abarca, poco aprieta."*
+
+
 ## Concepto
 
 > *"Cuantas más cosas haces al mismo tiempo, peor las haces."*
