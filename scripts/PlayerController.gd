@@ -20,7 +20,7 @@ func _ready() -> void:
 	add_to_group("players")
 	sprite.modulate = color
 	sprite.scale = Vector2(0.32, 0.32)
-	sprite.rotation = -PI / 2.0  # Empieza mirando hacia abajo
+	sprite.rotation = 0.0
 	sprite.play("idle")
 	clone_label.text = "P" + str(player_index + 1) if player_index > 0 else "YOU"
 	interact_bar.visible = false
@@ -31,7 +31,7 @@ func activate_with_delay(delay: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	draw_circle(Vector2(0, 7), 7.0, Color(0, 0, 0, 0.3))
+	draw_circle(Vector2(0, 10), 17.0, Color(0, 0, 0, 0.3))
 	if _activation_timer <= 0.0 or _activation_duration <= 0.0:
 		return
 	var ratio := _activation_timer / _activation_duration

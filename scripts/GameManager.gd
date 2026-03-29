@@ -14,8 +14,8 @@ const MIN_WAVE_INTERVAL := 7.0
 const MAX_TASKS_PER_WAVE := 8
 const MAX_STRESS := 5
 
-const MAP_MIN := Vector2(140, 140)
-const MAP_MAX := Vector2(860, 430)
+const MAP_MIN := Vector2(80, 100)
+const MAP_MAX := Vector2(890, 470)
 
 # Mecanica para perder
 const COLLAPSE_TIME := 10.0

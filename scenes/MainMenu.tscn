@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://mainmenu"]
 
 [ext_resource type="Script" uid="uid://df3swed7v5wf5" path="res://scripts/MainMenu.gd" id="1"]
-[ext_resource type="Texture2D" path="res://sprites/OVERSPLIT.png" id="2"]
-[ext_resource type="Texture2D" path="res://sprites/fondo_menu.jpeg" id="3"]
+[ext_resource type="Texture2D" uid="uid://xgq8fnh5cpgx" path="res://sprites/OVERSPLIT.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://d3q2ndubat7uj" path="res://sprites/fondo_menu.jpeg" id="3"]
 
 [node name="MainMenu" type="Node2D" unique_id=109679599]
 script = ExtResource("1")
@@ -17,7 +17,7 @@ stretch_mode = 6
 [node name="DarkOverlay" type="ColorRect" parent="." unique_id=318370208]
 offset_right = 960.0
 offset_bottom = 540.0
-color = Color(0.0, 0.0, 0.05, 0.55)
+color = Color(0, 0, 0.05, 0.55)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1769978528]
 
@@ -32,8 +32,8 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="LogoRect" type="TextureRect" parent="CanvasLayer/Panel/VBox" unique_id=111222333]
-layout_mode = 2
 custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
 texture = ExtResource("2")
 expand_mode = 3
 stretch_mode = 5
@@ -66,7 +66,7 @@ theme_override_font_sizes/font_size = 14
 text = "VER MEJORAS"
 
 [node name="TutorialButton" type="Button" parent="CanvasLayer/Panel/VBox" unique_id=223344556]
-modulate = Color(0.4, 0.9, 1.0, 1)
+modulate = Color(0.4, 0.9, 1, 1)
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 focus_mode = 0
@@ -74,7 +74,7 @@ theme_override_font_sizes/font_size = 14
 text = "CÓMO JUGAR"
 
 [node name="OptionsButton" type="Button" parent="CanvasLayer/Panel/VBox" unique_id=223344557]
-modulate = Color(0.6, 0.9, 1.0, 1)
+modulate = Color(0.6, 0.9, 1, 1)
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 focus_mode = 0
@@ -163,21 +163,20 @@ horizontal_alignment = 1
 [node name="Divider" type="ColorRect" parent="CanvasLayer/TutorialPanel/VBox" unique_id=778899001]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
-color = Color(0.4, 0.9, 1.0, 0.5)
+color = Color(0.4, 0.9, 1, 0.5)
 
 [node name="ContentLabel" type="Label" parent="CanvasLayer/TutorialPanel/VBox" unique_id=889900112]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="NavRow" type="HBoxContainer" parent="CanvasLayer/TutorialPanel/VBox" unique_id=990011223]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 16
+alignment = 1
 
 [node name="PrevButton" type="Button" parent="CanvasLayer/TutorialPanel/VBox/NavRow" unique_id=101122334]
 custom_minimum_size = Vector2(110, 32)
