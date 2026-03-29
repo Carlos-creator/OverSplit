@@ -5,6 +5,9 @@
 **Género:** Puzzle / Gestión / Roguelite
 
 ---
+## Temática
+
+> *"El que mucho abarca, poco aprieta."*
 
 ## Concepto
 
