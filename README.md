@@ -1,13 +1,10 @@
 # OverSplit
 
-**Versión:** v10.2  
+**Versión:** v11.0  
 **Motor:** Godot 4.6 (GDScript)  
 **Género:** Puzzle / Gestión / Roguelite
 
 ---
-## Temática
-
-> *"El que mucho abarca, poco aprieta."*
 
 ## Concepto
 
@@ -26,18 +23,18 @@ OverSplit es un prototipo de game jam donde el jugador puede clonarse para atend
 | Mover | Flechas / WASD |
 | Crear clon | SPACE |
 | Eliminar clon | Q |
-| Interactuar | E (en rango) |
-| Asignar prioridad a clon | Click izquierdo en tarea |
-| Cancelar prioridad | Click derecho en tarea |
+| Desactivar bomba | E (en rango) |
+| Asignar prioridad a clon | Click izquierdo en bomba |
+| Cancelar prioridad | Click derecho en bomba |
 | Pausar | ESC / Botón Pausa |
 | Velocidad del juego | Botón x1 / x1.5 / x2 |
 | Saltar oleada | Botón Skip (solo si no hay tareas activas) |
 
 ### Loop principal
 
-1. Aparecen tareas (bombas) con un temporizador — hay que completarlas antes de que exploten
-2. Interactuar con una tarea la completa progresivamente; varios clones en la misma tarea la completan más rápido
-3. Cada ola es más difícil: más tareas, menos tiempo, más trabajo por tarea
+1. Aparecen bombas con un temporizador — hay que desactivarlas antes de que exploten
+2. Desactivar una bomba requiere presencia; varios clones en la misma bomba la desactivan más rápido
+3. Cada ola es más difícil: más bombas, menos tiempo, más trabajo por bomba
 4. Cada 3 olas se puede elegir una mejora (upgrade) de 3 opciones aleatorias
 5. Las mejoras no elegidas se descartan para siempre en esa run
 
@@ -67,7 +64,7 @@ Los upgrades pueden modificar este comportamiento (ver catálogo de mejoras).
 
 ## Sistema de estrés y colapso
 
-Fallar tareas acumula **estrés** (máx. 5). Cada nivel aplica un debuff acumulativo:
+Dejar explotar bombas acumula **estrés** (máx. 5). Cada nivel aplica un debuff acumulativo:
 
 | Estrés | Efecto |
 |---|---|
@@ -77,7 +74,7 @@ Fallar tareas acumula **estrés** (máx. 5). Cada nivel aplica un debuff acumula
 | 4 | −10% eficiencia global |
 | 5 | **Zona de Colapso** — efectos caóticos activos |
 
-Completar una tarea reduce el estrés en 1 (si es mayor a 0).
+Desactivar una bomba reduce el estrés en 1 (si es mayor a 0).
 
 ### Zona de Colapso
 Cuando el estrés llega al máximo (5), se activa la Zona de Colapso: la pantalla lo señaliza con efectos visuales y los clones tienen un 0.2% de chance por frame de ignorar sus directivas e ir a tareas aleatorias. Si el estrés se mantiene en 5 durante **10 segundos consecutivos**, es **Game Over**.
@@ -161,7 +158,7 @@ Un botón **"Ver detalle"** expande la descripción completa.
 
 ## HUD en pantalla
 
-- **Ola** — número actual y dificultad (color reactivo)
+- **Ola** — número actual y dificultad (color reactivo, visible en todo momento)
 - **Próxima ola** — countdown + barra de progreso
 - **Eficiencia** — porcentaje actual con barra de color (verde/amarillo/rojo)
 - **Clones** — cantidad actual / máximo
@@ -177,6 +174,7 @@ Un botón **"Ver detalle"** expande la descripción completa.
 Accesible con **ESC** o el botón de pausa en pantalla.
 
 - Botón **Continuar**
+- Botón **Opciones** — idioma, volumen música y SFX
 - Botón **Menú principal**
 - Sección **Mejoras activas**: lista con icono, nombre y descripción corta de cada upgrade elegido; click en una fila expande la descripción completa
 
@@ -187,6 +185,7 @@ Accesible con **ESC** o el botón de pausa en pantalla.
 - **Jugar** — inicia una nueva run (resetea mejoras)
 - **Ver Mejoras** — catálogo completo de upgrades organizado por categoría, con descripción expandible al hacer click
 - **Cómo Jugar** — tutorial de 6 pasos navegable (← →)
+- **Opciones** — idioma (🇪🇸 🇬🇧 🇧🇷), volumen música y SFX
 - **Salir** — cierra el juego
 
 ---
@@ -205,7 +204,8 @@ OverSplit/
 │       ├── EfficiencyUI.tscn   # HUD principal (eficiencia, score, oleada, estrés)
 │       ├── GameOver.tscn       # Pantalla de Game Over
 │       ├── PauseMenu.tscn      # Menú de pausa con lista de mejoras activas
-│       └── UpgradeIconsHUD.tscn # Iconos de upgrades activos (esquina inferior derecha)
+│       ├── UpgradeIconsHUD.tscn # Iconos de upgrades activos (esquina inferior derecha)
+│       └── OptionsMenu.tscn    # Menú de opciones (idioma + volumen)
 │
 ├── scripts/
 │   ├── GameManager.gd          # Autoload — estado global, oleadas, estrés, colapso
@@ -221,7 +221,8 @@ OverSplit/
 │   ├── GameOver.gd             # Pantalla de Game Over
 │   ├── EfficiencyUI.gd         # Actualización del HUD
 │   ├── UpgradeScreen.gd        # Lógica de cartas de mejora con timer
-│   └── UpgradeIconsHUD.gd      # Iconos HUD con tooltip y panel de detalle
+│   ├── UpgradeIconsHUD.gd      # Iconos HUD con tooltip y panel de detalle
+│   └── OptionsMenu.gd          # Lógica de opciones: idioma y control de volumen
 │
 ├── sprites/
 │   ├── Bomba/                  # 21 frames de animación de la bomba
@@ -234,6 +235,12 @@ OverSplit/
 │
 ├── backgrounds/
 │   └── fondo_oversplit.png     # Fondo top-down del área de juego (steampunk)
+│
+├── translations/
+│   ├── translations.csv        # Fuente de traducciones ES/EN/PT
+│   ├── translations.es.translation
+│   ├── translations.en.translation
+│   └── translations.pt.translation
 │
 └── audio/
     ├── PaCarlosIntro.wav       # Música del menú (loop)
@@ -261,6 +268,9 @@ Click izquierdo asigna el clon más cercano disponible a la tarea (indicador num
 
 ### Audio 100% procedural (SFX)
 Todos los efectos de sonido se generan en tiempo real con `AudioStreamGenerator` usando ondas sine, square y noise. Solo la música usa archivos WAV.
+
+### Fix de orientación de sprite al salir de interacción
+Al terminar de desactivar una bomba, el sprite del clon ahora se orienta inmediatamente hacia el siguiente destino en vez de girar con lerp desde la posición anterior, eliminando el efecto de "caminar hacia atrás".
 
 ### Colapso emergente (no inmediato)
 Estrés máximo (5) activa Zona de Colapso, pero el Game Over solo ocurre si el estrés se mantiene en 5 durante 10 segundos consecutivos. La barra de colapso sube y baja según el estrés actual, dando margen de recuperación.
@@ -293,3 +303,4 @@ Estrés máximo (5) activa Zona de Colapso, pero el Game Over solo ocurre si el 
 | v9.0 | Sistema de upgrades roguelite, HUD de iconos, WASD |
 | v10.0 | Fixes: spawn acumulado en pausa, upgrades de eficiencia, MAX_CLONES mutable |
 | v10.2 | Tutorial integrado en menú, catálogo de mejoras en menú, GameOver dinámico, fixes generales |
+| v11.0 | Sistema de localización ES/EN/PT, menú de opciones (idioma + volumen), fix orientación sprite, oleada visible en todo momento |

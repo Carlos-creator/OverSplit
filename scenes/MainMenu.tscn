@@ -73,6 +73,14 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 14
 text = "CÓMO JUGAR"
 
+[node name="OptionsButton" type="Button" parent="CanvasLayer/Panel/VBox" unique_id=223344557]
+modulate = Color(0.6, 0.9, 1.0, 1)
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 14
+text = "OPCIONES"
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/Panel/VBox" unique_id=1144496466]
 modulate = Color(0.8, 0.8, 0.8, 1)
 custom_minimum_size = Vector2(0, 40)

@@ -1,10 +1,26 @@
 extends CanvasLayer
 
+var _options_menu: Node = null
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 	$Panel/VBox/ResumeButton.pressed.connect(_on_resume)
+	$Panel/VBox/OptionsButton.pressed.connect(_on_options)
 	$Panel/VBox/MenuButton.pressed.connect(_on_menu)
+	_update_texts()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		_update_texts()
+
+func _update_texts() -> void:
+	$Panel/VBox/Title.text           = tr("PAUSE")
+	$Panel/VBox/ResumeButton.text    = tr("RESUME")
+	$Panel/VBox/OptionsButton.text   = tr("OPTIONS")
+	$Panel/VBox/MenuButton.text      = tr("MAIN_MENU")
+	$Panel/VBox/UpgradesTitle.text   = tr("ACTIVE_UPGRADES")
+	$Panel/VBox/NoUpgradesLabel.text = tr("NO_UPGRADES")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventJoypadMotion:
@@ -31,6 +47,13 @@ func _on_resume() -> void:
 	get_tree().paused = false
 	visible = false
 
+func _on_options() -> void:
+	if _options_menu == null or not is_instance_valid(_options_menu):
+		var scene := load("res://scenes/ui/OptionsMenu.tscn") as PackedScene
+		_options_menu = scene.instantiate()
+		get_tree().root.add_child(_options_menu)
+	_options_menu.open()
+
 func _on_menu() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
@@ -42,11 +65,9 @@ func _populate_upgrades() -> void:
 	var list: VBoxContainer = $Panel/VBox/UpgradesScroll/UpgradesList
 	for child in list.get_children():
 		child.queue_free()
-
 	var upgrades: Array = get_node("/root/UpgradeManager").active_upgrades
 	var no_label: Label = $Panel/VBox/NoUpgradesLabel
 	no_label.visible = upgrades.is_empty()
-
 	for upgrade in upgrades:
 		var row := _make_row(upgrade)
 		list.add_child(row)
@@ -54,7 +75,6 @@ func _populate_upgrades() -> void:
 func _make_row(upgrade: Dictionary) -> Control:
 	var vbox := VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 2)
-
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 6)
 	vbox.add_child(hbox)
@@ -70,19 +90,19 @@ func _make_row(upgrade: Dictionary) -> Control:
 	hbox.add_child(info_vbox)
 
 	var name_lbl := Label.new()
-	name_lbl.text = upgrade.get("name", "")
+	name_lbl.text = tr(upgrade.get("name_key", upgrade.get("name", "")))
 	name_lbl.add_theme_font_size_override("font_size", 12)
 	info_vbox.add_child(name_lbl)
 
 	var short_lbl := Label.new()
-	short_lbl.text = upgrade.get("desc_short", "")
+	short_lbl.text = tr(upgrade.get("short_key", upgrade.get("desc_short", "")))
 	short_lbl.add_theme_font_size_override("font_size", 10)
 	short_lbl.modulate = Color(0.7, 0.7, 0.7, 1)
 	short_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info_vbox.add_child(short_lbl)
 
 	var detail_lbl := Label.new()
-	detail_lbl.text = upgrade.get("desc_long", "")
+	detail_lbl.text = tr(upgrade.get("long_key", upgrade.get("desc_long", "")))
 	detail_lbl.add_theme_font_size_override("font_size", 10)
 	detail_lbl.modulate = Color(0.9, 0.85, 0.5, 1)
 	detail_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -98,5 +118,4 @@ func _make_row(upgrade: Dictionary) -> Control:
 
 	var sep := HSeparator.new()
 	vbox.add_child(sep)
-
 	return vbox

@@ -205,11 +205,43 @@ Si no elige en 10s: se descartan las 3 sin aplicar ninguna.
 
 ---
 
+
+---
+
+## Sistema de localización
+
+El juego soporta **español, inglés y portugués (Brasil)** usando `TranslationServer` nativo de Godot 4.
+
+### Estructura
+- `translations/translations.csv` — fuente única con todas las claves en 3 idiomas
+- Compilado automáticamente por Godot a `.translation` por idioma
+- Idioma por defecto: detectado del sistema operativo (fallback: español)
+- Cambio de idioma: disponible desde el menú de opciones en cualquier momento
+
+### Cobertura de traducción
+Todo el juego está traducido: UI, HUD, botones, menú de pausa, tutorial completo (6 pasos), catálogo de mejoras (nombres, descripciones cortas y largas), pantalla de elección de mejoras, Game Over y menú de opciones.
+
+### Actualización en tiempo real
+Al cambiar el idioma durante la partida, todas las labels se actualizan instantáneamente incluyendo las dinámicas del HUD (`EFFICIENCY`, `CLONES`, `STRESS`, `WAVE`, `NEXT_WAVE`, `SCORE`, `DIFFICULTY`). Esto se logra combinando `NOTIFICATION_TRANSLATION_CHANGED` con propagación recursiva del árbol de nodos y refuerzo manual de labels que normalmente se actualizan en `_process` (que está pausado mientras el menú de opciones está abierto).
+
+---
+
+## Menú de Opciones
+
+Accesible desde el menú principal y desde el menú de pausa. Implementado como `CanvasLayer` (layer 15) con `PROCESS_MODE_ALWAYS`.
+
+| Opción | Implementación |
+|---|---|
+| Idioma 🇪🇸 🇬🇧 🇧🇷 | `TranslationServer.set_locale()` + propagación recursiva |
+| Volumen música | `AudioManager.set_music_volume()` → `volume_db` en `AudioStreamPlayer` |
+| Volumen SFX | `AudioManager.set_sfx_volume()` → aplicado en cada `_play()` |
+
 ## Menú principal
 
 Pantallas accesibles desde el menú:
 
 - **Catálogo de mejoras** — todas las 17 mejoras organizadas por categoría con colores por categoría, descripción expandible al click.
+- **Opciones** — idioma (🇪🇸 🇬🇧 🇧🇷), sliders de volumen música y SFX
 - **Tutorial** — 6 pasos navegables: ¿Qué es OverSplit?, Controles, Clones y eficiencia, Asignar prioridad, Estrés y colapso, Mejoras.
 
 Colores por categoría en el catálogo:
@@ -222,3 +254,19 @@ Colores por categoría en el catálogo:
 | Tareas | Amarillo |
 | Eficiencia | Rojo |
 | Meta | Amarillo pálido |
+
+## Fix de orientación de sprite (v11.0)
+
+Al terminar una interacción (`_cancel_interaction()`), el sprite del clon ahora se orienta inmediatamente al siguiente destino:
+
+```gdscript
+var next := _next_target if _next_target != null else _directed_to
+if next != null and is_instance_valid(next):
+    var dir_to_next: Vector2 = ((next as Node2D).global_position - global_position).normalized()
+    if dir_to_next != Vector2.ZERO:
+        _last_dir = dir_to_next
+        sprite.rotation = dir_to_next.angle() - PI / 2.0
+```
+
+Sin este fix, el clon comenzaba a moverse hacia la nueva tarea con el sprite aún rotado hacia la tarea anterior, produciendo el efecto visual de "caminar hacia atrás".
+

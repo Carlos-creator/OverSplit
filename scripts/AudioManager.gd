@@ -26,7 +26,7 @@ func _play(buf: PackedVector2Array, duration: float, volume_db: float) -> void:
 	gen.mix_rate      = SAMPLE_RATE
 	gen.buffer_length = duration + 0.08
 	player.stream    = gen
-	player.volume_db = volume_db
+	player.volume_db = volume_db + _linear_to_db(maxf(0.001, _sfx_volume))
 	player.play()
 	var pb: AudioStreamGeneratorPlayback = player.get_stream_playback()
 	pb.push_buffer(buf)
@@ -156,3 +156,32 @@ func play_game_music() -> void:
 func stop_music() -> void:
 	if _music_menu: _music_menu.stop()
 	if _music_game:  _music_game.stop()
+
+# --- Volume control ---
+
+var _music_volume: float = 1.0
+var _sfx_volume: float = 1.0
+
+func get_music_volume() -> float:
+	return _music_volume
+
+func get_sfx_volume() -> float:
+	return _sfx_volume
+
+func set_music_volume(value: float) -> void:
+	_music_volume = clampf(value, 0.0, 1.0)
+	var db := _linear_to_db(_music_volume)
+	if _music_menu:
+		_music_menu.volume_db = db
+	if _music_game:
+		_music_game.volume_db = db
+
+func set_sfx_volume(value: float) -> void:
+	_sfx_volume = clampf(value, 0.0, 1.0)
+	# Se aplica en el momento de reproducir cada SFX
+	pass
+
+func _linear_to_db(value: float) -> float:
+	if value <= 0.0:
+		return -80.0
+	return 20.0 * log(value) / log(10.0)

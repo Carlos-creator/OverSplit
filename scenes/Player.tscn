@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://player"]
 
 [ext_resource type="Script" uid="uid://3fx8bmp0uv8e" path="res://scripts/PlayerController.gd" id="1"]
-[ext_resource type="SpriteFrames" uid="uid://cap6tfnre058y" path="res://sprites/sprite_frames_pj.tres" id="2_v6fml"]
+[ext_resource type="SpriteFrames" uid="uid://cxnmmkxsvl0b5" path="res://sprites/sprite_frames_pj.tres" id="2_v6fml"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 32)

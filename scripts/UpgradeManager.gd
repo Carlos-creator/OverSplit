@@ -6,93 +6,111 @@ const UPGRADE_INTERVAL := 3
 
 const CATALOGUE: Array = [
 	{
-		"id": "adrenalina", "name": "Adrenalina", "icon": "⚡", "category": "Velocidad",
-		"desc_short": "+60% vel. base | −10% efic. extra por clon",
+		"id": "adrenalina", "icon": "⚡", "category_key": "CAT_SPEED",
+		"name_key": "UPG_ADRENALINA_NAME", "short_key": "UPG_ADRENALINA_SHORT", "long_key": "UPG_ADRENALINA_LONG",
+		"name": "Adrenalina", "desc_short": "+60% vel. base | −10% efic. extra por clon",
 		"desc_long": "Aumenta la velocidad base un 60%. Sin embargo, cada clon activo reduce la eficiencia un 10% adicional sobre la penalización normal."
 	},
 	{
-		"id": "enfoque", "name": "Enfoque", "icon": "🎯", "category": "Velocidad",
-		"desc_short": "+80% vel. con 1 clon | −50% vel. con 2+",
+		"id": "enfoque", "icon": "🎯", "category_key": "CAT_SPEED",
+		"name_key": "UPG_ENFOQUE_NAME", "short_key": "UPG_ENFOQUE_SHORT", "long_key": "UPG_ENFOQUE_LONG",
+		"name": "Enfoque", "desc_short": "+80% vel. con 1 clon | −50% vel. con 2+",
 		"desc_long": "Con 1 clon activo, la velocidad aumenta un 80%. Con 2 o más clones, la velocidad cae al 50% de la base. Ideal para runs minimalistas."
 	},
 	{
-		"id": "caravana", "name": "Caravana", "icon": "🚶", "category": "Velocidad",
-		"desc_short": "+30% vel. en grupo | −20% vel. en solitario",
+		"id": "caravana", "icon": "🚶", "category_key": "CAT_SPEED",
+		"name_key": "UPG_CARAVANA_NAME", "short_key": "UPG_CARAVANA_SHORT", "long_key": "UPG_CARAVANA_LONG",
+		"name": "Caravana", "desc_short": "+30% vel. en grupo | −20% vel. en solitario",
 		"desc_long": "Los clones cerca de otro se mueven un 30% más rápido. Los clones solos (sin vecino a menos de 80px) se mueven un 20% más lento."
 	},
 	{
-		"id": "torrente", "name": "Torrente", "icon": "💧", "category": "Interacción",
-		"desc_short": "x1.5 progreso con 2+ clones | −30% solo",
+		"id": "torrente", "icon": "💧", "category_key": "CAT_INTERACTION",
+		"name_key": "UPG_TORRENTE_NAME", "short_key": "UPG_TORRENTE_SHORT", "long_key": "UPG_TORRENTE_LONG",
+		"name": "Torrente", "desc_short": "x1.5 progreso con 2+ clones | −30% solo",
 		"desc_long": "Cuando 2 o más clones interactúan con la misma tarea, el progreso acumulado es x1.5. Un solo clon interactúa un 30% más lento."
 	},
 	{
-		"id": "impulso", "name": "Impulso", "icon": "💨", "category": "Interacción",
-		"desc_short": "1ra interacción de cada ola instantánea | −20% las siguientes",
+		"id": "impulso", "icon": "💨", "category_key": "CAT_INTERACTION",
+		"name_key": "UPG_IMPULSO_NAME", "short_key": "UPG_IMPULSO_SHORT", "long_key": "UPG_IMPULSO_LONG",
+		"name": "Impulso", "desc_short": "1ra interacción de cada ola instantánea | −20% las siguientes",
 		"desc_long": "La primera interacción completada de cada ola es instantánea. Todas las interacciones siguientes de esa ola tienen un 20% de penalización."
 	},
 	{
-		"id": "constancia", "name": "Constancia", "icon": "🔥", "category": "Interacción",
-		"desc_short": "Interacción sin cortes sube hasta x2 | reset al interrumpir",
+		"id": "constancia", "icon": "🔥", "category_key": "CAT_INTERACTION",
+		"name_key": "UPG_CONSTANCIA_NAME", "short_key": "UPG_CONSTANCIA_SHORT", "long_key": "UPG_CONSTANCIA_LONG",
+		"name": "Constancia", "desc_short": "Interacción sin cortes sube hasta x2 | reset al interrumpir",
 		"desc_long": "Interactuar sin interrupciones acumula un multiplicador de velocidad de interacción hasta x2. Cualquier interrupción lo resetea a x1."
 	},
 	{
-		"id": "ejercito_minimo", "name": "Ejército Mínimo", "icon": "🛡", "category": "Clones",
-		"desc_short": "100% efic. con 1–2 clones | máx clones = 3",
+		"id": "ejercito_minimo", "icon": "🛡", "category_key": "CAT_CLONES",
+		"name_key": "UPG_EJERCITO_NAME", "short_key": "UPG_EJERCITO_SHORT", "long_key": "UPG_EJERCITO_LONG",
+		"name": "Ejército Mínimo", "desc_short": "100% efic. con 1–2 clones | máx clones = 3",
 		"desc_long": "Con 1 o 2 clones activos, la eficiencia es siempre 100%. El máximo de clones se reduce permanentemente a 3."
 	},
 	{
-		"id": "proliferacion", "name": "Proliferación", "icon": "👥", "category": "Clones",
-		"desc_short": "Máx clones = 8 | efic. mínima = 8%",
+		"id": "proliferacion", "icon": "👥", "category_key": "CAT_CLONES",
+		"name_key": "UPG_PROLIFERACION_NAME", "short_key": "UPG_PROLIFERACION_SHORT", "long_key": "UPG_PROLIFERACION_LONG",
+		"name": "Proliferación", "desc_short": "Máx clones = 8 | efic. mínima = 8%",
 		"desc_long": "El máximo de clones sube a 8. La eficiencia mínima cae al 8%, haciendo el caos más extremo. Para jugadores que abrazan el descontrol."
 	},
 	{
-		"id": "sacrificio", "name": "Sacrificio", "icon": "💀", "category": "Clones",
-		"desc_short": "+300 pts al eliminar clon | −200 pts al crear",
+		"id": "sacrificio", "icon": "💀", "category_key": "CAT_CLONES",
+		"name_key": "UPG_SACRIFICIO_NAME", "short_key": "UPG_SACRIFICIO_SHORT", "long_key": "UPG_SACRIFICIO_LONG",
+		"name": "Sacrificio", "desc_short": "+300 pts al eliminar clon | −200 pts al crear",
 		"desc_long": "Eliminar un clon da un bonus de +300 puntos. Crear un clon cuesta 200 puntos del score. Incentiva rotar clones estratégicamente."
 	},
 	{
-		"id": "sobrecarga", "name": "Sobrecarga", "icon": "💥", "category": "Tareas",
-		"desc_short": "+150 pts por fallo | fallo spawnea 1 tarea extra",
+		"id": "sobrecarga", "icon": "💥", "category_key": "CAT_TASKS",
+		"name_key": "UPG_SOBRECARGA_NAME", "short_key": "UPG_SOBRECARGA_SHORT", "long_key": "UPG_SOBRECARGA_LONG",
+		"name": "Sobrecarga", "desc_short": "+150 pts por fallo | fallo spawnea 1 tarea extra",
 		"desc_long": "Cada tarea fallida otorga +150 puntos de bonus. Pero cada tarea fallida también spawnea 1 tarea nueva inmediatamente. Alto riesgo, alta recompensa."
 	},
 	{
-		"id": "cadena", "name": "Cadena", "icon": "⛓", "category": "Tareas",
-		"desc_short": "+3s a todas al completar | −5s a todas al fallar",
+		"id": "cadena", "icon": "⛓", "category_key": "CAT_TASKS",
+		"name_key": "UPG_CADENA_NAME", "short_key": "UPG_CADENA_SHORT", "long_key": "UPG_CADENA_LONG",
+		"name": "Cadena", "desc_short": "+3s a todas al completar | −5s a todas al fallar",
 		"desc_long": "Completar una tarea extiende el timeout de todas las demás en +3 segundos. Fallar una tarea resta 5 segundos a todas las activas."
 	},
 	{
-		"id": "efecto_domino", "name": "Efecto Dominó", "icon": "🎲", "category": "Tareas",
-		"desc_short": "x2 score con racha de 2 | reset al fallar",
+		"id": "efecto_domino", "icon": "🎲", "category_key": "CAT_TASKS",
+		"name_key": "UPG_DOMINO_NAME", "short_key": "UPG_DOMINO_SHORT", "long_key": "UPG_DOMINO_LONG",
+		"name": "Efecto Dominó", "desc_short": "x2 score con racha de 2 | reset al fallar",
 		"desc_long": "Completar 2 tareas seguidas sin fallar dobla el score de las siguientes. Fallar cualquier tarea resetea el multiplicador a x1."
 	},
 	{
-		"id": "caos_controlado", "name": "Caos Controlado", "icon": "🌀", "category": "Eficiencia",
-		"desc_short": "Tareas urgentes x3 pts | sin urgencia = 0 pts extra",
+		"id": "caos_controlado", "icon": "🌀", "category_key": "CAT_EFFICIENCY",
+		"name_key": "UPG_CAOS_CTRL_NAME", "short_key": "UPG_CAOS_CTRL_SHORT", "long_key": "UPG_CAOS_CTRL_LONG",
+		"name": "Caos Controlado", "desc_short": "Tareas urgentes x3 pts | sin urgencia = 0 pts extra",
 		"desc_long": "Las tareas con urgencia activa (borde rojo) valen x3 puntos al completarse. Las tareas sin urgencia no otorgan puntos extra."
 	},
 	{
-		"id": "zona_confort", "name": "Zona de Confort", "icon": "😌", "category": "Eficiencia",
-		"desc_short": "Sin penaliz. hasta 4 clones | caída x2 con 5–6",
+		"id": "zona_confort", "icon": "😌", "category_key": "CAT_EFFICIENCY",
+		"name_key": "UPG_ZONA_CONF_NAME", "short_key": "UPG_ZONA_CONF_SHORT", "long_key": "UPG_ZONA_CONF_LONG",
+		"name": "Zona de Confort", "desc_short": "Sin penaliz. hasta 4 clones | caída x2 con 5–6",
 		"desc_long": "Con 1 a 4 clones, no hay penalización de eficiencia. A partir del 5° clon, la caída es el doble de pronunciada que la fórmula base."
 	},
 	{
-		"id": "caos_productivo", "name": "Caos Productivo", "icon": "🔀", "category": "Eficiencia",
-		"desc_short": "+500 pts cada 10s con efic.<30% | clones desobedecen 20%",
+		"id": "caos_productivo", "icon": "🔀", "category_key": "CAT_EFFICIENCY",
+		"name_key": "UPG_CAOS_PROD_NAME", "short_key": "UPG_CAOS_PROD_SHORT", "long_key": "UPG_CAOS_PROD_LONG",
+		"name": "Caos Productivo", "desc_short": "+500 pts cada 10s con efic.<30% | clones desobedecen 20%",
 		"desc_long": "Cada 10 segundos con eficiencia menor al 30% se acumulan +500 puntos automáticamente. Los clones tienen 20% de chance de ignorar directivas."
 	},
 	{
-		"id": "umbral", "name": "Umbral", "icon": "📊", "category": "Eficiencia",
-		"desc_short": "Efic. nunca baja del 40% | máximo = 80%",
+		"id": "umbral", "icon": "📊", "category_key": "CAT_EFFICIENCY",
+		"name_key": "UPG_UMBRAL_NAME", "short_key": "UPG_UMBRAL_SHORT", "long_key": "UPG_UMBRAL_LONG",
+		"name": "Umbral", "desc_short": "Efic. nunca baja del 40% | máximo = 80%",
 		"desc_long": "La eficiencia nunca cae por debajo del 40%, sin importar cuántos clones tengas. Pero la eficiencia máxima es 80% aunque tengas 1 solo clon."
 	},
 	{
-		"id": "segunda_oportunidad", "name": "Segunda Oportunidad", "icon": "🔄", "category": "Meta",
-		"desc_short": "Recupera 1 tarea fallida (1 vez) | elimina todos los clones",
+		"id": "segunda_oportunidad", "icon": "🔄", "category_key": "CAT_META",
+		"name_key": "UPG_SEGUNDA_NAME", "short_key": "UPG_SEGUNDA_SHORT", "long_key": "UPG_SEGUNDA_LONG",
+		"name": "Segunda Oportunidad", "desc_short": "Recupera 1 tarea fallida (1 vez) | elimina todos los clones",
 		"desc_long": "Una vez por partida, puedes recuperar una tarea fallida que regresa al 50% de progreso. Al usarla, todos los clones se eliminan instantáneamente."
 	},
 	{
-		"id": "reloj_arena", "name": "Reloj de Arena", "icon": "⌛", "category": "Meta",
-		"desc_short": "Ola no inicia hasta limpiar todo | −4s timeout próxima ola",
+		"id": "reloj_arena", "icon": "⌛", "category_key": "CAT_META",
+		"name_key": "UPG_RELOJ_NAME", "short_key": "UPG_RELOJ_SHORT", "long_key": "UPG_RELOJ_LONG",
+		"name": "Reloj de Arena", "desc_short": "Ola no inicia hasta limpiar todo | −4s timeout próxima ola",
 		"desc_long": "La siguiente ola nunca empieza hasta que completas todas las tareas actuales. El tiempo límite de todas las tareas de la próxima ola se reduce en 4 segundos."
 	},
 ]
@@ -146,11 +164,9 @@ func _on_efficiency_changed(_eff: float) -> void:
 	pass
 
 func _show_upgrade_screen() -> void:
-	# FIX: verificar si hay opciones antes de mostrar la pantalla
 	var options := _pick_three()
 	if options.is_empty():
-		return  # No hay mejoras disponibles, saltar silenciosamente
-
+		return
 	if _upgrade_screen == null or not is_instance_valid(_upgrade_screen):
 		var scene := load("res://scenes/UpgradeScreen.tscn") as PackedScene
 		if scene == null:

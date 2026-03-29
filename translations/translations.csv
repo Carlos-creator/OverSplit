@@ -1,0 +1,123 @@
+keys,es,en,pt
+PLAY,JUGAR,PLAY,JOGAR
+QUIT,SALIR,QUIT,SAIR
+HOW_TO_PLAY,CÓMO JUGAR,HOW TO PLAY,COMO JOGAR
+SEE_UPGRADES,VER MEJORAS,SEE UPGRADES,VER MELHORIAS
+OPTIONS,OPCIONES,OPTIONS,OPÇÕES
+RESUME,CONTINUAR,RESUME,CONTINUAR
+MAIN_MENU,MENÚ PRINCIPAL,MAIN MENU,MENU PRINCIPAL
+PAUSE,PAUSA,PAUSE,PAUSA
+ACTIVE_UPGRADES,Mejoras activas,Active upgrades,Melhorias ativas
+NO_UPGRADES,Ninguna mejora elegida aún,No upgrades chosen yet,Nenhuma melhoria escolhida ainda
+GAME_OVER,GAME OVER,GAME OVER,GAME OVER
+REPLAY,Volver a jugar,Play again,Jogar novamente
+LANGUAGE,Idioma,Language,Idioma
+MUSIC_VOLUME,Volumen música,Music volume,Volume música
+SFX_VOLUME,Volumen SFX,SFX volume,Volume SFX
+CLOSE,✕ Cerrar,✕ Close,✕ Fechar
+TAGLINE,"Cuantas más cosas haces
+al mismo tiempo, peor las haces.",The more things you do at once
+the worse you do them.,"Quanto mais coisas você faz
+ao mesmo tempo, pior as faz."
+UPGRADES_CATALOGUE,Catálogo de Mejoras,Upgrades Catalogue,Catálogo de Melhorias
+UPGRADES_HINT,Estas mejoras aparecen durante el juego cada 3 olas. Click en una para ver la descripción completa.,These upgrades appear every 3 waves. Click one to see the full description.,Essas melhorias aparecem a cada 3 ondas. Clique em uma para ver a descrição completa.
+CHOOSE_UPGRADE,Elige una mejora,Choose an upgrade,Escolha uma melhoria
+SKIP_UPGRADE,Si no elegís en el tiempo límite, la ola empieza sin mejora,If you don't choose in time, the wave starts without an upgrade,Se não escolher a tempo, a onda começa sem melhoria
+VIEW_DETAIL,Ver detalle,View detail,Ver detalhe
+HIDE_DETAIL,Ocultar detalle,Hide detail,Ocultar detalhe
+CHOOSE,Elegir,Choose,Escolher
+WAVE,Ola: %d,Wave: %d,Onda: %d
+DIFFICULTY,Dificultad: %s,Difficulty: %s,Dificuldade: %s
+NEXT_WAVE,Próxima ola: %ds,Next wave: %ds,Próxima onda: %ds
+EFFICIENCY,Eficiencia: %d%%,Efficiency: %d%%,Eficiência: %d%%
+CLONES,Clones: %d / %d,Clones: %d / %d,Clones: %d / %d
+SCORE,Score: %d,Score: %d,Score: %d
+STRESS,Estrés: %d/%d,Stress: %d/%d,Estresse: %d/%d
+STRESS_WARNING,Estrés: %d/%d  !,Stress: %d/%d  !,Estresse: %d/%d  !
+STRESS_CRITICAL,!! ZONA CRITICA !!,!! CRITICAL ZONE !!,!! ZONA CRÍTICA !!
+HINT_CONTROLS,[SPACE] Clonar  [Q] Eliminar clon  [E] Desactivar,[SPACE] Clone  [Q] Remove clone  [E] Defuse,[SPACE] Clonar  [Q] Remover clone  [E] Desativar
+PAUSE_BTN,II  PAUSA  [ESC],II  PAUSE  [ESC],II  PAUSA  [ESC]
+SPEED_BTN,Vel: %s,Speed: %s,Vel: %s
+SKIP_WAVE,>> Saltar oleada,>> Skip wave,>> Pular onda
+DIFFICULTY_EASY,Facil,Easy,Fácil
+DIFFICULTY_NORMAL,Normal,Normal,Normal
+DIFFICULTY_HARD,Dificil,Hard,Difícil
+DIFFICULTY_CHAOS,CAOS,CHAOS,CAOS
+DIRECTIVE,>> %d,>> %d,>> %d
+TUTORIAL_TITLE,Tutorial,Tutorial,Tutorial
+TUT_STEP,"%d / %d","%d / %d","%d / %d"
+TUT_PREV,← Anterior,← Previous,← Anterior
+TUT_NEXT,Siguiente →,Next →,Seguinte →
+TUT_LAST,¡Entendido!,Got it!,Entendido!
+TUT1_TITLE,¿Qué es OverSplit?,What is OverSplit?,O que é OverSplit?
+TUT1_TEXT,"Eres un trabajador que se divide en clones para desactivar bombas antes de que exploten. Cada clon que creas reduce tu eficiencia, pero desactivar bombas requiere presencia. ¡Encuentra el equilibrio!","You are a worker who splits into clones to defuse bombs before they explode. Each clone you create reduces your efficiency, but defusing bombs requires presence. Find the balance!","Você é um trabalhador que se divide em clones para desativar bombas antes que explodam. Cada clone criado reduz sua eficiência, mas desativar bombas requer presença. Encontre o equilíbrio!"
+TUT2_TITLE,Controles,Controls,Controles
+TUT2_TEXT,"Mover              →  Flechas / WASD\nCrear clon         →  SPACE\nEliminar clon      →  Q\nDesactivar bomba   →  E (en rango)\nAsignar prioridad  →  Click izquierdo en bomba\nCancelar prioridad →  Click derecho en bomba\nPausar             →  ESC / Botón Pausa\nVelocidad          →  Botón x1 / x1.5 / x2\nSaltar oleada      →  Botón Skip","Move               →  Arrows / WASD\nCreate clone       →  SPACE\nRemove clone       →  Q\nDefuse bomb        →  E (in range)\nAssign priority    →  Left click on bomb\nCancel priority    →  Right click on bomb\nPause              →  ESC / Pause button\nGame speed         →  x1 / x1.5 / x2 button\nSkip wave          →  Skip button","Mover              →  Setas / WASD\nCriar clone        →  SPACE\nRemover clone      →  Q\nDesativar bomba    →  E (no alcance)\nAtribuir prioridade →  Clique esquerdo na bomba\nCancelar prioridade →  Clique direito na bomba\nPausar             →  ESC / Botão Pausa\nVelocidade         →  Botão x1 / x1.5 / x2\nPular onda         →  Botão Skip"
+TUT3_TITLE,Clones y eficiencia,Clones and efficiency,Clones e eficiência
+TUT3_TEXT,"Con 1 clon tienes 100% de eficiencia. Cada clon extra la reduce. Más clones = más bombas desactivadas en paralelo, pero se mueven y actúan más lento. ¡Demasiados clones puede ser peor!","With 1 clone you have 100% efficiency. Each extra clone reduces it. More clones = more bombs defused in parallel, but they move and act slower. Too many clones can be worse!","Com 1 clone você tem 100% de eficiência. Cada clone extra a reduz. Mais clones = mais bombas desativadas em paralelo, mas eles se movem e agem mais devagar. Clones demais pode ser pior!"
+TUT4_TITLE,Asignar prioridad a clones,Assigning clone priority,Atribuir prioridade aos clones
+TUT4_TEXT,"Haz click izquierdo en una bomba para asignar el siguiente clon disponible a desactivarla. Cada click asigna un clon más. Haz click derecho para cancelar todas las asignaciones de esa bomba. Los clones asignados se muestran con un borde cyan pulsante.","Left click on a bomb to assign the next available clone to defuse it. Each click assigns one more clone. Right click to cancel all assignments for that bomb. Assigned clones are shown with a pulsing cyan border.","Clique esquerdo em uma bomba para atribuir o próximo clone disponível para desativá-la. Cada clique atribui mais um clone. Clique direito para cancelar todas as atribuições dessa bomba. Clones atribuídos são mostrados com uma borda cyan pulsante."
+TUT5_TITLE,Estrés y colapso,Stress and collapse,Estresse e colapso
+TUT5_TEXT,"Dejar explotar bombas sube el estrés (máx 5). Con estrés alto pierdes velocidad, eficiencia y tiempo. Si llegas al máximo y no bajas el estrés, la barra de colapso se llena y pierdes.","Letting bombs explode raises stress (max 5). High stress reduces speed, efficiency and time. If you reach the maximum and don't lower stress, the collapse bar fills up and you lose.","Deixar bombas explodirem aumenta o estresse (máx 5). Com estresse alto você perde velocidade, eficiência e tempo. Se chegar ao máximo e não reduzir o estresse, a barra de colapso enche e você perde."
+TUT6_TITLE,Mejoras,Upgrades,Melhorias
+TUT6_TEXT,"Cada 3 oleadas eliges 1 mejora de 3 opciones aleatorias. Las que no eliges se descartan para siempre en esa partida. ¡Planifica tu build con cuidado!","Every 3 waves you choose 1 upgrade from 3 random options. The ones you don't choose are discarded forever in that run. Plan your build carefully!","A cada 3 ondas você escolhe 1 melhoria de 3 opções aleatórias. As que você não escolher são descartadas para sempre nessa partida. Planeje seu build com cuidado!"
+CAT_SPEED,Velocidad,Speed,Velocidade
+CAT_INTERACTION,Interacción,Interaction,Interação
+CAT_CLONES,Clones,Clones,Clones
+CAT_TASKS,Tareas,Tasks,Tarefas
+CAT_EFFICIENCY,Eficiencia,Efficiency,Eficiência
+CAT_META,Meta,Meta,Meta
+UPG_ADRENALINA_NAME,Adrenalina,Adrenaline,Adrenalina
+UPG_ADRENALINA_SHORT,+60% vel. base | −10% efic. extra por clon,+60% base speed | −10% extra eff. per clone,+60% vel. base | −10% efic. extra por clone
+UPG_ADRENALINA_LONG,"Aumenta la velocidad base un 60%. Sin embargo, cada clon activo reduce la eficiencia un 10% adicional sobre la penalización normal.","Increases base speed by 60%. However, each active clone reduces efficiency by an additional 10% on top of the normal penalty.","Aumenta a velocidade base em 60%. No entanto, cada clone ativo reduz a eficiência em 10% adicional sobre a penalização normal."
+UPG_ENFOQUE_NAME,Enfoque,Focus,Foco
+UPG_ENFOQUE_SHORT,+80% vel. con 1 clon | −50% vel. con 2+,+80% speed with 1 clone | −50% speed with 2+,+80% vel. com 1 clone | −50% vel. com 2+
+UPG_ENFOQUE_LONG,"Con 1 clon activo, la velocidad aumenta un 80%. Con 2 o más clones, la velocidad cae al 50% de la base. Ideal para runs minimalistas.","With 1 active clone, speed increases by 80%. With 2 or more clones, speed drops to 50% of base. Ideal for minimalist runs.","Com 1 clone ativo, a velocidade aumenta 80%. Com 2 ou mais clones, a velocidade cai para 50% da base. Ideal para runs minimalistas."
+UPG_CARAVANA_NAME,Caravana,Caravan,Caravana
+UPG_CARAVANA_SHORT,+30% vel. en grupo | −20% vel. en solitario,+30% speed in group | −20% speed alone,+30% vel. em grupo | −20% vel. sozinho
+UPG_CARAVANA_LONG,"Los clones cerca de otro se mueven un 30% más rápido. Los clones solos (sin vecino a menos de 80px) se mueven un 20% más lento.","Clones near another move 30% faster. Lone clones (no neighbor within 80px) move 20% slower.","Clones próximos a outro se movem 30% mais rápido. Clones sozinhos (sem vizinho a menos de 80px) se movem 20% mais devagar."
+UPG_TORRENTE_NAME,Torrente,Torrent,Torrente
+UPG_TORRENTE_SHORT,x1.5 progreso con 2+ clones | −30% solo,x1.5 progress with 2+ clones | −30% alone,x1.5 progresso com 2+ clones | −30% sozinho
+UPG_TORRENTE_LONG,"Cuando 2 o más clones interactúan con la misma bomba, el progreso acumulado es x1.5. Un solo clon interactúa un 30% más lento.","When 2 or more clones interact with the same bomb, accumulated progress is x1.5. A single clone interacts 30% slower.","Quando 2 ou mais clones interagem com a mesma bomba, o progresso acumulado é x1.5. Um único clone interage 30% mais devagar."
+UPG_IMPULSO_NAME,Impulso,Impulse,Impulso
+UPG_IMPULSO_SHORT,1ra interacción de cada ola instantánea | −20% las siguientes,1st interaction each wave is instant | −20% the rest,1ª interação de cada onda instantânea | −20% as seguintes
+UPG_IMPULSO_LONG,"La primera interacción completada de cada ola es instantánea. Todas las interacciones siguientes de esa ola tienen un 20% de penalización.","The first completed interaction of each wave is instant. All subsequent interactions that wave have a 20% penalty.","A primeira interação completada de cada onda é instantânea. Todas as interações seguintes dessa onda têm uma penalização de 20%."
+UPG_CONSTANCIA_NAME,Constancia,Consistency,Constância
+UPG_CONSTANCIA_SHORT,Interacción sin cortes sube hasta x2 | reset al interrumpir,Uninterrupted interaction builds to x2 | resets on interrupt,Interação sem cortes sobe até x2 | reset ao interromper
+UPG_CONSTANCIA_LONG,"Interactuar sin interrupciones acumula un multiplicador de velocidad de interacción hasta x2. Cualquier interrupción lo resetea a x1.","Interacting without interruptions accumulates an interaction speed multiplier up to x2. Any interruption resets it to x1.","Interagir sem interrupções acumula um multiplicador de velocidade de interação até x2. Qualquer interrupção o reseta para x1."
+UPG_EJERCITO_NAME,Ejército Mínimo,Minimal Army,Exército Mínimo
+UPG_EJERCITO_SHORT,100% efic. con 1–2 clones | máx clones = 3,100% eff. with 1–2 clones | max clones = 3,100% efic. com 1–2 clones | máx clones = 3
+UPG_EJERCITO_LONG,"Con 1 o 2 clones activos, la eficiencia es siempre 100%. El máximo de clones se reduce permanentemente a 3.","With 1 or 2 active clones, efficiency is always 100%. The maximum number of clones is permanently reduced to 3.","Com 1 ou 2 clones ativos, a eficiência é sempre 100%. O máximo de clones é reduzido permanentemente para 3."
+UPG_PROLIFERACION_NAME,Proliferación,Proliferation,Proliferação
+UPG_PROLIFERACION_SHORT,Máx clones = 8 | efic. mínima = 8%,Max clones = 8 | min eff. = 8%,Máx clones = 8 | efic. mínima = 8%
+UPG_PROLIFERACION_LONG,"El máximo de clones sube a 8. La eficiencia mínima cae al 8%, haciendo el caos más extremo. Para jugadores que abrazan el descontrol.","Maximum clones rises to 8. Minimum efficiency drops to 8%, making chaos more extreme. For players who embrace mayhem.","O máximo de clones sobe para 8. A eficiência mínima cai para 8%, tornando o caos mais extremo. Para jogadores que abraçam o descontrole."
+UPG_SACRIFICIO_NAME,Sacrificio,Sacrifice,Sacrifício
+UPG_SACRIFICIO_SHORT,+300 pts al eliminar clon | −200 pts al crear,+300 pts on clone remove | −200 pts on create,+300 pts ao remover clone | −200 pts ao criar
+UPG_SACRIFICIO_LONG,"Eliminar un clon da un bonus de +300 puntos. Crear un clon cuesta 200 puntos del score. Incentiva rotar clones estratégicamente.","Removing a clone gives a +300 point bonus. Creating a clone costs 200 points from the score. Encourages strategic clone rotation.","Remover um clone dá um bônus de +300 pontos. Criar um clone custa 200 pontos do score. Incentiva rotacionar clones estrategicamente."
+UPG_SOBRECARGA_NAME,Sobrecarga,Overload,Sobrecarga
+UPG_SOBRECARGA_SHORT,+150 pts por fallo | fallo spawnea 1 bomba extra,+150 pts per failure | failure spawns 1 extra bomb,+150 pts por falha | falha gera 1 bomba extra
+UPG_SOBRECARGA_LONG,"Cada bomba fallida otorga +150 puntos de bonus. Pero cada bomba fallida también spawnea 1 bomba nueva inmediatamente. Alto riesgo, alta recompensa.","Each failed bomb grants +150 bonus points. But each failed bomb also spawns 1 new bomb immediately. High risk, high reward.","Cada bomba falhada concede +150 pontos de bônus. Mas cada bomba falhada também gera 1 nova bomba imediatamente. Alto risco, alta recompensa."
+UPG_CADENA_NAME,Cadena,Chain,Corrente
+UPG_CADENA_SHORT,+3s a todas al completar | −5s a todas al fallar,+3s to all on complete | −5s to all on failure,+3s a todas ao completar | −5s a todas ao falhar
+UPG_CADENA_LONG,"Completar una bomba extiende el timeout de todas las demás en +3 segundos. Fallar una bomba resta 5 segundos a todas las activas.","Defusing a bomb extends all other bombs' timers by +3 seconds. Failing a bomb subtracts 5 seconds from all active bombs.","Desativar uma bomba estende o tempo de todas as outras em +3 segundos. Falhar uma bomba subtrai 5 segundos de todas as ativas."
+UPG_DOMINO_NAME,Efecto Dominó,Domino Effect,Efeito Dominó
+UPG_DOMINO_SHORT,x2 score con racha de 2 | reset al fallar,x2 score on 2-streak | resets on failure,x2 score com sequência de 2 | reset ao falhar
+UPG_DOMINO_LONG,"Completar 2 bombas seguidas sin fallar dobla el score de las siguientes. Fallar cualquier bomba resetea el multiplicador a x1.","Defusing 2 bombs in a row without failing doubles the score of the following ones. Failing any bomb resets the multiplier to x1.","Desativar 2 bombas seguidas sem falhar dobra o score das seguintes. Falhar qualquer bomba reseta o multiplicador para x1."
+UPG_CAOS_CTRL_NAME,Caos Controlado,Controlled Chaos,Caos Controlado
+UPG_CAOS_CTRL_SHORT,Bombas urgentes x3 pts | sin urgencia = 0 pts extra,Urgent bombs x3 pts | no urgency = 0 extra pts,Bombas urgentes x3 pts | sem urgência = 0 pts extra
+UPG_CAOS_CTRL_LONG,"Las bombas con urgencia activa (borde rojo) valen x3 puntos al desactivarse. Las bombas sin urgencia no otorgan puntos extra.","Bombs with active urgency (red border) are worth x3 points when defused. Bombs without urgency grant no extra points.","Bombas com urgência ativa (borda vermelha) valem x3 pontos ao serem desativadas. Bombas sem urgência não concedem pontos extras."
+UPG_ZONA_CONF_NAME,Zona de Confort,Comfort Zone,Zona de Conforto
+UPG_ZONA_CONF_SHORT,Sin penaliz. hasta 4 clones | caída x2 con 5–6,No penalty up to 4 clones | x2 drop with 5–6,Sem penaliz. até 4 clones | queda x2 com 5–6
+UPG_ZONA_CONF_LONG,"Con 1 a 4 clones, no hay penalización de eficiencia. A partir del 5° clon, la caída es el doble de pronunciada que la fórmula base.","With 1 to 4 clones, there is no efficiency penalty. From the 5th clone onwards, the drop is twice as steep as the base formula.","Com 1 a 4 clones, não há penalização de eficiência. A partir do 5º clone, a queda é o dobro da fórmula base."
+UPG_CAOS_PROD_NAME,Caos Productivo,Productive Chaos,Caos Produtivo
+UPG_CAOS_PROD_SHORT,+500 pts cada 10s con efic.<30% | clones desobedecen 20%,+500 pts every 10s with eff.<30% | clones disobey 20%,+500 pts a cada 10s com efic.<30% | clones desobedecem 20%
+UPG_CAOS_PROD_LONG,"Cada 10 segundos con eficiencia menor al 30% se acumulan +500 puntos automáticamente. Los clones tienen 20% de chance de ignorar directivas.","Every 10 seconds with efficiency below 30%, +500 points are automatically added. Clones have a 20% chance of ignoring directives.","A cada 10 segundos com eficiência abaixo de 30%, +500 pontos são adicionados automaticamente. Os clones têm 20% de chance de ignorar diretivas."
+UPG_UMBRAL_NAME,Umbral,Threshold,Limiar
+UPG_UMBRAL_SHORT,Efic. nunca baja del 40% | máximo = 80%,Eff. never drops below 40% | max = 80%,Efic. nunca abaixo de 40% | máximo = 80%
+UPG_UMBRAL_LONG,"La eficiencia nunca cae por debajo del 40%, sin importar cuántos clones tengas. Pero la eficiencia máxima es 80% aunque tengas 1 solo clon.","Efficiency never drops below 40%, no matter how many clones you have. But maximum efficiency is 80% even with just 1 clone.","A eficiência nunca cai abaixo de 40%, independentemente de quantos clones você tenha. Mas a eficiência máxima é 80% mesmo com apenas 1 clone."
+UPG_SEGUNDA_NAME,Segunda Oportunidad,Second Chance,Segunda Chance
+UPG_SEGUNDA_SHORT,Recupera 1 bomba fallida (1 vez) | elimina todos los clones,Recover 1 failed bomb (once) | removes all clones,Recupera 1 bomba falhada (1 vez) | remove todos os clones
+UPG_SEGUNDA_LONG,"Una vez por partida, puedes recuperar una bomba fallida que regresa al 50% de progreso. Al usarla, todos los clones se eliminan instantáneamente.","Once per run, you can recover a failed bomb that returns to 50% progress. When used, all clones are instantly removed.","Uma vez por partida, você pode recuperar uma bomba falhada que retorna com 50% de progresso. Ao usá-la, todos os clones são removidos instantaneamente."
+UPG_RELOJ_NAME,Reloj de Arena,Hourglass,Ampulheta
+UPG_RELOJ_SHORT,Ola no inicia hasta limpiar todo | −4s timeout próxima ola,Wave won't start until all clear | −4s timeout next wave,Onda não inicia até limpar tudo | −4s timeout próxima onda
+UPG_RELOJ_LONG,"La siguiente ola nunca empieza hasta que completas todas las bombas actuales. El tiempo límite de todas las bombas de la próxima ola se reduce en 4 segundos.","The next wave never starts until you defuse all current bombs. The time limit of all bombs in the next wave is reduced by 4 seconds.","A próxima onda nunca começa até você desativar todas as bombas atuais. O tempo limite de todas as bombas da próxima onda é reduzido em 4 segundos."

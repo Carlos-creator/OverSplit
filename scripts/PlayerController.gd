@@ -200,6 +200,15 @@ func _cancel_interaction() -> void:
 	_interact_target = null
 	interact_bar.visible = false
 
+	# Fix: orientar el sprite hacia el próximo destino al salir de la interacción
+	# para evitar que se vea "caminando hacia atrás" durante el lerp de rotación
+	var next := _next_target if _next_target != null else _directed_to
+	if next != null and is_instance_valid(next):
+		var dir_to_next: Vector2 = ((next as Node2D).global_position - global_position).normalized()
+		if dir_to_next != Vector2.ZERO:
+			_last_dir = dir_to_next
+			sprite.rotation = dir_to_next.angle() - PI / 2.0
+
 func _claim_best_task(gm: Node, exclude: Node) -> Node:
 	var best: Node = null
 	var best_dist := INF

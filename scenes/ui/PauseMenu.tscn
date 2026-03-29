@@ -13,9 +13,9 @@ color = Color(0, 0, 0, 0.55)
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=1387175817]
 offset_left = 280.0
-offset_top = 80.0
+offset_top = 60.0
 offset_right = 680.0
-offset_bottom = 460.0
+offset_bottom = 480.0
 
 [node name="VBox" type="VBoxContainer" parent="Panel" unique_id=279122044]
 layout_mode = 2
@@ -33,6 +33,14 @@ layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "CONTINUAR"
+
+[node name="OptionsButton" type="Button" parent="Panel/VBox" unique_id=1686371568]
+modulate = Color(0.4, 0.85, 1, 1)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "OPCIONES"
 
 [node name="MenuButton" type="Button" parent="Panel/VBox" unique_id=639352622]
 modulate = Color(0.8, 0.8, 0.8, 1)

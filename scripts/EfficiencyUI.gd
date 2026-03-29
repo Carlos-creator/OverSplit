@@ -35,18 +35,49 @@ func _ready() -> void:
 	_on_efficiency_changed(1.0)
 	_on_clone_count_changed(1)
 	_on_stress_changed(0, gm.MAX_STRESS)
-	hint_label.text = "[SPACE] Clonar  [Q] Eliminar clon  [E] Interactuar"
 	pause_button.pressed.connect(_on_pause_button)
 	speed_button.pressed.connect(_on_speed_button)
 	skip_button.pressed.connect(_on_skip_button)
+	_update_texts()
 	_update_speed_button()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		if not is_node_ready():
+			return
+		_update_texts()
+		# Refrescar labels dinámicas inmediatamente
+		var gm := get_node("/root/GameManager")
+		_on_efficiency_changed(gm.efficiency)
+		_on_clone_count_changed(gm.clone_count)
+		_on_stress_changed(gm.stress, gm.MAX_STRESS)
+		_on_wave_started(gm.wave)
+		_update_difficulty_label(gm)
+		# Forzar update de labels de _process (no corren durante pausa)
+		var interval: float = gm.get_current_wave_interval()
+		var remaining: float = interval - gm.wave_timer
+		wave_timer_label.text = _fmt("NEXT_WAVE", [int(ceil(remaining))])
+		score_label.text = _fmt("SCORE", [gm.score])
+
+func _update_texts() -> void:
+	hint_label.text   = tr("HINT_CONTROLS")
+	pause_button.text = tr("PAUSE_BTN")
+	skip_button.text  = tr("SKIP_WAVE")
+	_update_speed_button()
+
+func _fmt(key: String, args: Array) -> String:
+	var template := tr(key)
+	# Si la traducción no está disponible aún, devolver cadena segura
+	if not "%d" in template and not "%s" in template:
+		return template
+	return template % args
 
 func _process(_delta: float) -> void:
 	var gm := get_node("/root/GameManager")
-	score_label.text = "Score: %d" % gm.score
+	score_label.text = _fmt("SCORE", [gm.score])
 	var interval: float = gm.get_current_wave_interval()
 	var remaining: float = interval - gm.wave_timer
-	wave_timer_label.text = "Proxima ola: %ds" % int(ceil(remaining))
+	wave_timer_label.text = _fmt("NEXT_WAVE", [int(ceil(remaining))])
 	wave_timer_bar.max_value = interval
 	wave_timer_bar.value = remaining
 	_update_difficulty_label(gm)
@@ -55,7 +86,7 @@ func _process(_delta: float) -> void:
 func _on_efficiency_changed(value: float) -> void:
 	efficiency_bar.value = value * 100.0
 	var pct := int(value * 100)
-	efficiency_label.text = "Eficiencia: %d%%" % pct
+	efficiency_label.text = _fmt("EFFICIENCY", [pct])
 	var bar_color: Color
 	if value > 0.6:
 		bar_color = COLOR_GOOD
@@ -68,29 +99,29 @@ func _on_efficiency_changed(value: float) -> void:
 		_shake_if_low(value)
 
 func _on_clone_count_changed(count: int) -> void:
-	clone_label.text = "Clones: %d / %d" % [count, get_node("/root/GameManager").MAX_CLONES]
+	clone_label.text = _fmt("CLONES", [count, get_node("/root/GameManager").MAX_CLONES])
 
 func _on_wave_started(wave_number: int) -> void:
-	wave_label.text = "Ola: %d" % wave_number
+	wave_label.text = _fmt("WAVE", [wave_number])
 	_flash_wave_label()
 
 func _on_stress_changed(value: int, max_value: int) -> void:
 	stress_bar.max_value = max_value
 	stress_bar.value = value
 	if value == 0:
-		stress_label.text = "Estres: 0/%d" % max_value
+		stress_label.text = _fmt("STRESS", [0, max_value])
 		stress_label.modulate = Color(0.8, 0.8, 0.8, 1)
 		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(0.3, 0.8, 0.3)))
 	elif value <= 2:
-		stress_label.text = "Estres: %d/%d" % [value, max_value]
+		stress_label.text = _fmt("STRESS", [value, max_value])
 		stress_label.modulate = Color(1.0, 0.85, 0.2, 1)
 		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(0.9, 0.7, 0.1)))
 	elif value <= 4:
-		stress_label.text = "Estres: %d/%d  !" % [value, max_value]
+		stress_label.text = _fmt("STRESS_WARNING", [value, max_value])
 		stress_label.modulate = Color(1.0, 0.4, 0.1, 1)
 		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(0.9, 0.3, 0.1)))
 	else:
-		stress_label.text = "!! ZONA CRITICA !!"
+		stress_label.text = tr("STRESS_CRITICAL")
 		stress_label.modulate = Color(1.0, 0.1, 0.1, 1)
 		stress_bar.add_theme_stylebox_override("fill", _make_fill_style(Color(1.0, 0.05, 0.05)))
 
@@ -118,11 +149,10 @@ func _stop_continuous_shake() -> void:
 	$Panel.position.x = 0.0
 
 func _flash_wave_label() -> void:
+	# Flash de entrada al cambiar ola, pero se queda visible
 	var t := create_tween()
 	t.tween_property(wave_label, "modulate:a", 0.0, 0.0)
 	t.tween_property(wave_label, "modulate:a", 1.0, 0.3)
-	t.tween_interval(1.5)
-	t.tween_property(wave_label, "modulate:a", 0.0, 0.5)
 
 func _shake_if_low(eff: float) -> void:
 	if eff > 0.25:
@@ -148,6 +178,8 @@ func _on_speed_button() -> void:
 	_update_speed_button()
 
 func _update_speed_button() -> void:
+	if not is_node_ready():
+		return
 	speed_button.text = "Vel: " + SPEED_LABELS[_speed_index]
 	match _speed_index:
 		0: speed_button.modulate = Color(0.85, 0.85, 0.85, 1.0)
@@ -157,10 +189,18 @@ func _update_speed_button() -> void:
 func _on_skip_button() -> void:
 	get_node("/root/GameManager").skip_wave()
 
+const DIFFICULTY_KEYS: Dictionary = {
+	"Facil":   "DIFFICULTY_EASY",
+	"Normal":  "DIFFICULTY_NORMAL",
+	"Dificil": "DIFFICULTY_HARD",
+	"CAOS":    "DIFFICULTY_CHAOS",
+}
+
 func _update_difficulty_label(gm: Node) -> void:
-	var label: String = gm.get_difficulty_label()
-	difficulty_label.text = "Dificultad: " + label
-	match label:
+	var diff: String = gm.get_difficulty_label()
+	var key: String = DIFFICULTY_KEYS.get(diff, "DIFFICULTY_NORMAL")
+	difficulty_label.text = _fmt("DIFFICULTY", [tr(key)])
+	match diff:
 		"Facil":   difficulty_label.modulate = Color(0.4, 1.0, 0.4, 1)
 		"Normal":  difficulty_label.modulate = Color(1.0, 0.85, 0.2, 1)
 		"Dificil": difficulty_label.modulate = Color(1.0, 0.4, 0.1, 1)

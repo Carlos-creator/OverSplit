@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://main"]
 
 [ext_resource type="PackedScene" uid="uid://player" path="res://scenes/Player.tscn" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/SwitchTask.tscn" id="2"]
-[ext_resource type="Texture2D" uid="uid://rxdpvypfsgbs" path="res://backgrounds/fondo_oversplit.png" id="2_lhr70"]
-[ext_resource type="PackedScene" path="res://scenes/ui/EfficiencyUI.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cp87730fwsq7m" path="res://scenes/SwitchTask.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://qcotsei0le5j" path="res://backgrounds/fondo_oversplit.png" id="2_lhr70"]
+[ext_resource type="PackedScene" uid="uid://dekc3kiowr1nb" path="res://scenes/ui/EfficiencyUI.tscn" id="3"]
 [ext_resource type="Script" uid="uid://xvcluhfxdjuj" path="res://scripts/CloneManager.gd" id="4"]
 [ext_resource type="Script" uid="uid://dwcfp25rkpquq" path="res://scripts/TaskSpawner.gd" id="5"]
 [ext_resource type="Script" uid="uid://c7he20vjsyaue" path="res://scripts/Main.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://pausemenu" path="res://scenes/ui/PauseMenu.tscn" id="7"]
-[ext_resource type="PackedScene" path="res://scenes/UpgradeScreen.tscn" id="8"]
-[ext_resource type="PackedScene" path="res://scenes/ui/UpgradeIconsHUD.tscn" id="9"]
+[ext_resource type="PackedScene" uid="uid://dod2s4nsias47" path="res://scenes/UpgradeScreen.tscn" id="8"]
+[ext_resource type="PackedScene" uid="uid://cc4qj2tjhkd1w" path="res://scenes/ui/UpgradeIconsHUD.tscn" id="9"]
 
 [node name="Main" type="Node2D" unique_id=678230049]
 script = ExtResource("6")
