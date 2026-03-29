@@ -14,8 +14,8 @@ const MIN_WAVE_INTERVAL := 7.0
 const MAX_TASKS_PER_WAVE := 8
 const MAX_STRESS := 5
 
-const MAP_MIN := Vector2(0, 0)
-const MAP_MAX := Vector2(960, 540)
+const MAP_MIN := Vector2(140, 140)
+const MAP_MAX := Vector2(860, 430)
 
 # Mecanica para perder
 const COLLAPSE_TIME := 10.0
@@ -44,6 +44,7 @@ func _ready() -> void:
 	pass
 
 func start_game() -> void:
+	get_node("/root/AudioManager").play_game_music()
 	_game_active = true
 	MAX_CLONES = 6
 	wave = 0
@@ -68,6 +69,7 @@ func stop_game() -> void:
 func _game_over() -> void:
 	if not _game_active:
 		return
+	get_node("/root/AudioManager").play_menu_music()
 	_game_active = false
 	get_tree().paused = true
 	var go = GameOverScene.instantiate()

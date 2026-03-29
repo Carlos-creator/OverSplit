@@ -10,6 +10,7 @@ func _ready() -> void:
 		var p := AudioStreamPlayer.new()
 		add_child(p)
 		_pool.append(p)
+	_setup_music()
 
 # --- Pool helpers ---
 
@@ -119,3 +120,35 @@ func play_interact_start() -> void:
 func play_low_efficiency() -> void:
 	var buf := _sine(220.0, 180.0, 0.12)
 	_play(buf, 0.12, -12.0)
+	
+var _music_menu: AudioStreamPlayer
+var _music_game: AudioStreamPlayer
+
+func _setup_music() -> void:
+	_music_menu = AudioStreamPlayer.new()
+	_music_menu.stream = load("res://audio/PaCarlosIntro.wav")
+	(_music_menu.stream as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
+	_music_menu.volume_db = 0.0
+	add_child(_music_menu)
+
+	_music_game = AudioStreamPlayer.new()
+	_music_game.stream = load("res://audio/PaCarlosFull.wav")
+	(_music_game.stream as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
+	_music_game.volume_db = 0.0
+	add_child(_music_game)
+
+func play_menu_music() -> void:
+	if _music_game:
+		_music_game.stop()
+	if _music_menu and not _music_menu.playing:
+		_music_menu.play()
+
+func play_game_music() -> void:
+	if _music_menu:
+		_music_menu.stop()
+	if _music_game and not _music_game.playing:
+		_music_game.play()
+
+func stop_music() -> void:
+	if _music_menu: _music_menu.stop()
+	if _music_game:  _music_game.stop()

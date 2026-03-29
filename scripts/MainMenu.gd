@@ -19,6 +19,7 @@ func _ready() -> void:
 	$CanvasLayer/Panel/VBox/QuitButton.pressed.connect(_on_quit)
 	$CanvasLayer/UpgradesPanel/VBox/Header/CloseButton.pressed.connect(_close_upgrades)
 	upgrades_overlay.gui_input.connect(_on_overlay_input)
+	get_node("/root/AudioManager").play_menu_music()
 
 func _on_play() -> void:
 	get_node("/root/UpgradeManager").reset_run()

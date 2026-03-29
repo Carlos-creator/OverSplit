@@ -10,14 +10,16 @@ var _directed_to: Node = null
 var _push_velocity: Vector2 = Vector2.ZERO
 var _activation_timer: float = 0.0
 var _activation_duration: float = 0.0
+var _last_dir: Vector2 = Vector2.DOWN
 
-@onready var sprite: ColorRect = $Sprite
+@onready var sprite: AnimatedSprite2D = $Sprite
 @onready var interact_bar: ProgressBar = $InteractBar
 @onready var clone_label: Label = $CloneLabel
 
 func _ready() -> void:
 	add_to_group("players")
-	sprite.color = color
+	sprite.modulate = color
+	sprite.play("idle_down")
 	clone_label.text = "P" + str(player_index + 1) if player_index > 0 else "YOU"
 	interact_bar.visible = false
 
@@ -27,6 +29,7 @@ func activate_with_delay(delay: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	draw_circle(Vector2(0, 7), 7.0, Color(0, 0, 0, 0.3))
 	if _activation_timer <= 0.0 or _activation_duration <= 0.0:
 		return
 	var ratio := _activation_timer / _activation_duration
@@ -102,6 +105,7 @@ func _handle_movement(_delta: float) -> void:
 		var other := col.get_collider()
 		if other != null and other.has_method("receive_push") and other._interacting:
 			other.receive_push(velocity.normalized() * 28.0)
+	_update_animation(dir)
 
 func _handle_ai_movement(_delta: float) -> void:
 	if _next_target == null or not is_instance_valid(_next_target):
@@ -251,3 +255,27 @@ func _find_nearest_any_task(gm: Node) -> Node:
 			best_dist = d
 			best = task
 	return best
+	
+func _update_animation(dir: Vector2) -> void:
+	if dir != Vector2.ZERO:
+		_last_dir = dir
+
+	var d := _last_dir
+	var is_moving := dir != Vector2.ZERO
+
+	var anim := ""
+
+	if d.x != 0 and d.y != 0:
+		var h := "right" if d.x > 0 else "left"
+		var v := "down" if d.y > 0 else "up"
+		anim = v + "_" + h
+	elif d.y < 0:
+		anim = "up"
+	elif d.y > 0:
+		anim = "down"
+	elif d.x > 0:
+		anim = "right"
+	elif d.x < 0:
+		anim = "left"
+
+	sprite.play(("walk_" if is_moving else "idle_") + anim)

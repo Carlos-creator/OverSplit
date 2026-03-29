@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://player"]
 
 [ext_resource type="Script" uid="uid://3fx8bmp0uv8e" path="res://scripts/PlayerController.gd" id="1"]
+[ext_resource type="SpriteFrames" uid="uid://cap6tfnre058y" path="res://sprites/sprite_frames_pj.tres" id="2_v6fml"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 32)
@@ -11,7 +12,8 @@ script = ExtResource("1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1376641650]
 shape = SubResource("1")
 
-[node name="Sprite" type="ColorRect" parent="." unique_id=1925470857]
+[node name="Sprite2" type="ColorRect" parent="." unique_id=1925470857]
+visible = false
 offset_left = -16.0
 offset_top = -16.0
 offset_right = 16.0
@@ -32,3 +34,7 @@ offset_top = 18.0
 offset_right = 20.0
 offset_bottom = 28.0
 show_percentage = false
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1415292728]
+sprite_frames = ExtResource("2_v6fml")
+animation = &"idle_down_left"
