@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qcotsei0le5j"
-path="res://.godot/imported/fondo_oversplit.png-d9414bf566c66024c46a99760765e9de.ctex"
+uid="uid://cqv3k60vgbllm"
+path="res://.godot/imported/sprite_pj.png-1e6e402980e11630aa2a6e673ba75f1f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://backgrounds/fondo_oversplit.png"
-dest_files=["res://.godot/imported/fondo_oversplit.png-d9414bf566c66024c46a99760765e9de.ctex"]
+source_file="res://sprites/sprite_pj.png"
+dest_files=["res://.godot/imported/sprite_pj.png-1e6e402980e11630aa2a6e673ba75f1f.ctex"]
 
 [params]
 

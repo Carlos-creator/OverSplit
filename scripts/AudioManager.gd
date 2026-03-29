@@ -129,12 +129,16 @@ func _setup_music() -> void:
 	_music_menu.stream = load("res://audio/PaCarlosIntro.wav")
 	(_music_menu.stream as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
 	_music_menu.volume_db = 0.0
+	# FIX: la música debe seguir sonando aunque el árbol esté pausado
+	_music_menu.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_music_menu)
 
 	_music_game = AudioStreamPlayer.new()
 	_music_game.stream = load("res://audio/PaCarlosFull.wav")
 	(_music_game.stream as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
 	_music_game.volume_db = 0.0
+	# FIX: la música debe seguir sonando aunque el árbol esté pausado
+	_music_game.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_music_game)
 
 func play_menu_music() -> void:

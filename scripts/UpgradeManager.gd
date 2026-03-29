@@ -88,12 +88,12 @@ const CATALOGUE: Array = [
 	{
 		"id": "segunda_oportunidad", "name": "Segunda Oportunidad", "icon": "🔄", "category": "Meta",
 		"desc_short": "Recupera 1 tarea fallida (1 vez) | elimina todos los clones",
-		"desc_long": "Una vez por run, podés recuperar una tarea fallida que regresa al 50% de progreso. Al usarla, todos los clones se eliminan instantáneamente."
+		"desc_long": "Una vez por partida, puedes recuperar una tarea fallida que regresa al 50% de progreso. Al usarla, todos los clones se eliminan instantáneamente."
 	},
 	{
 		"id": "reloj_arena", "name": "Reloj de Arena", "icon": "⌛", "category": "Meta",
 		"desc_short": "Ola no inicia hasta limpiar todo | −4s timeout próxima ola",
-		"desc_long": "La siguiente ola nunca empieza hasta que completás todas las tareas actuales. El timeout de todas las tareas de la próxima ola se reduce en 4 segundos."
+		"desc_long": "La siguiente ola nunca empieza hasta que completas todas las tareas actuales. El tiempo límite de todas las tareas de la próxima ola se reduce en 4 segundos."
 	},
 ]
 
@@ -146,13 +146,18 @@ func _on_efficiency_changed(_eff: float) -> void:
 	pass
 
 func _show_upgrade_screen() -> void:
+	# FIX: verificar si hay opciones antes de mostrar la pantalla
+	var options := _pick_three()
+	if options.is_empty():
+		return  # No hay mejoras disponibles, saltar silenciosamente
+
 	if _upgrade_screen == null or not is_instance_valid(_upgrade_screen):
 		var scene := load("res://scenes/UpgradeScreen.tscn") as PackedScene
 		if scene == null:
 			return
 		_upgrade_screen = scene.instantiate()
 		get_tree().get_root().add_child(_upgrade_screen)
-	_upgrade_screen.show_cards(_pick_three())
+	_upgrade_screen.show_cards(options)
 
 func _pick_three() -> Array:
 	var pool: Array = []

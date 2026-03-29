@@ -1,6 +1,6 @@
 # OverSplit
 
-**Versión:** v10.0 beta  
+**Versión:** v10.2  
 **Motor:** Godot 4.6 (GDScript)  
 **Género:** Puzzle / Gestión / Roguelite
 
@@ -26,19 +26,20 @@ OverSplit es un prototipo de game jam donde el jugador puede clonarse para atend
 | Mover | Flechas / WASD |
 | Crear clon | SPACE |
 | Eliminar clon | Q |
-| Interactuar / Asignar tarea | E (en rango) |
-| Click en tarea | Asignar prioridad a clones |
-| Click derecho en tarea | Quitar prioridad |
+| Interactuar | E (en rango) |
+| Asignar prioridad a clon | Click izquierdo en tarea |
+| Cancelar prioridad | Click derecho en tarea |
 | Pausar | ESC / Botón Pausa |
 | Velocidad del juego | Botón x1 / x1.5 / x2 |
-| Saltar oleada | Botón Skip |
+| Saltar oleada | Botón Skip (solo si no hay tareas activas) |
 
 ### Loop principal
 
-1. Aparecen tareas (cuadrados) con un temporizador — hay que completarlas antes de que expiren
+1. Aparecen tareas (bombas) con un temporizador — hay que completarlas antes de que exploten
 2. Interactuar con una tarea la completa progresivamente; varios clones en la misma tarea la completan más rápido
-3. Cada ola es más difícil: más tareas, menos tiempo
-4. Cada 3 olas se puede elegir una mejora (upgrade)
+3. Cada ola es más difícil: más tareas, menos tiempo, más trabajo por tarea
+4. Cada 3 olas se puede elegir una mejora (upgrade) de 3 opciones aleatorias
+5. Las mejoras no elegidas se descartan para siempre en esa run
 
 ---
 
@@ -72,43 +73,45 @@ Fallar tareas acumula **estrés** (máx. 5). Cada nivel aplica un debuff acumula
 |---|---|
 | 1 | −5% velocidad |
 | 2 | −1s timeout de tareas |
-| 3 | +0.3s delay de reacción de clones |
+| 3 | +0.3s delay de reacción de clones al crearse |
 | 4 | −10% eficiencia global |
 | 5 | **Zona de Colapso** — efectos caóticos activos |
 
-Completar **3 tareas seguidas** sin fallar reduce el estrés en 1.
+Completar una tarea reduce el estrés en 1 (si es mayor a 0).
 
 ### Zona de Colapso
-Cuando el estrés llega al máximo, la pantalla señaliza el estado crítico. El juego no termina automáticamente — es un **game over emergente**. El jugador puede recuperarse reduciendo el estrés.
+Cuando el estrés llega al máximo (5), se activa la Zona de Colapso: la pantalla lo señaliza con efectos visuales y los clones tienen un 0.2% de chance por frame de ignorar sus directivas e ir a tareas aleatorias. Si el estrés se mantiene en 5 durante **10 segundos consecutivos**, es **Game Over**.
+
+El jugador puede recuperarse completando tareas para bajar el estrés antes de que se llene la barra de colapso.
 
 ---
 
 ## Sistema de oleadas
 
-- Las oleadas inician automáticamente cada **20s** (se reduce con el tiempo, mínimo 7s)
+- Las oleadas inician automáticamente cada **20s** (se reduce 1.3s por ola, mínimo 7s)
+- Las tareas se spawnean de a una cada 0.4s (gradualmente, no todas de golpe)
 - La dificultad sube con cada oleada: más tareas, menos tiempo, más trabajo por tarea
 - Las tareas tienen **tamaño variable** según su cantidad de trabajo restante
-- Un **glow/sombra** crece a medida que la tarea tiene más vida
-- Si la tarea está urgente (poco tiempo), **pulsa** visualmente
-- Si la tarea requiere más clones de los asignados, aparece un **badge dorado** con el número recomendado
+- Si la tarea está urgente (queda menos del 35% del tiempo), **pulsa** visualmente y cambia animación
+- Si la tarea requiere más clones de los asignados, aparece un **badge dorado** ①②③ con el número recomendado
 
-| Oleada | Dificultad |
-|---|---|
-| 1–2 | Fácil |
-| 3–5 | Normal |
-| 6–9 | Difícil |
-| 10+ | CAOS |
+| Oleada | Dificultad | Tareas máx | Work amount |
+|---|---|---|---|
+| 1–2 | Fácil | 2 | 1 |
+| 3–5 | Normal | 4–6 | 1–2 |
+| 6–9 | Difícil | 7–8 | 1–2 |
+| 10+ | CAOS | 8 | 1–3 |
 
 ---
 
 ## Sistema de mejoras (Roguelite)
 
 Cada **3 oleadas** se pausa el juego y se presentan **3 cartas aleatorias** del catálogo.  
-El jugador elige una; las otras 2 se descartan y no vuelven a aparecer en esa run.  
-No hay límite de tiempo — se puede leer tranquilo.
+El jugador tiene **10 segundos** para elegir una; si no elige, se descartan todas y la ola empieza sin mejora.  
+Las cartas no elegidas se descartan permanentemente para esa run.
 
 Cada carta muestra icono, nombre, categoría y descripción corta.  
-Un botón **"Ver detalle"** expande la descripción completa inline.
+Un botón **"Ver detalle"** expande la descripción completa.
 
 ### Catálogo completo
 
@@ -138,30 +141,33 @@ Un botón **"Ver detalle"** expande la descripción completa inline.
 |---|---|---|
 | 💥 | Sobrecarga | +150 pts por fallo, pero spawnea 1 tarea extra |
 | ⛓ | Cadena | +3s a todas al completar, −5s a todas al fallar |
-| 🎲 | Efecto Dominó | x2 score con racha de 2, reset al fallar |
+| 🎲 | Efecto Dominó | x2 score con racha de 2 completadas, reset al fallar |
 
 #### Eficiencia
 | Icono | Nombre | Efecto |
 |---|---|---|
 | 🌀 | Caos Controlado | Tareas urgentes x3 pts, sin urgencia = 0 pts extra |
 | 😌 | Zona de Confort | Sin penaliz. hasta 4 clones, caída x2 con 5–6 |
-| 🔀 | Caos Productivo | +500 pts cada 10s con efic.<30% |
+| 🔀 | Caos Productivo | +500 pts cada 10s con efic.<30%, clones desobedecen 20% |
 | 📊 | Umbral | Efic. nunca baja del 40%, máximo = 80% |
 
 #### Meta
 | Icono | Nombre | Efecto |
 |---|---|---|
-| 🔄 | Segunda Oportunidad | Recupera 1 tarea fallida (1 vez), elimina todos los clones |
+| 🔄 | Segunda Oportunidad | Recupera 1 tarea fallida (1 vez por run), elimina todos los clones |
 | ⌛ | Reloj de Arena | Ola no inicia hasta limpiar todo, −4s timeout próxima ola |
 
 ---
 
 ## HUD en pantalla
 
-- **Eficiencia** — porcentaje actual (esquina superior)
+- **Ola** — número actual y dificultad (color reactivo)
+- **Próxima ola** — countdown + barra de progreso
+- **Eficiencia** — porcentaje actual con barra de color (verde/amarillo/rojo)
+- **Clones** — cantidad actual / máximo
 - **Score** — puntuación acumulada
-- **Oleada** — número y dificultad actual
-- **Estrés** — barra de 0 a 5 con indicador de Zona de Colapso
+- **Estrés** — barra de 0 a 5 con indicador de Zona Crítica
+- **Botones** — Pausa, Velocidad (x1/x1.5/x2), Saltar oleada
 - **Iconos de mejoras activas** — esquina inferior derecha; hover muestra descripción breve, click muestra detalle completo
 
 ---
@@ -170,16 +176,18 @@ Un botón **"Ver detalle"** expande la descripción completa inline.
 
 Accesible con **ESC** o el botón de pausa en pantalla.
 
-- Botón **Reanudar**
-- Botón **Volver al menú**
+- Botón **Continuar**
+- Botón **Menú principal**
 - Sección **Mejoras activas**: lista con icono, nombre y descripción corta de cada upgrade elegido; click en una fila expande la descripción completa
 
 ---
 
 ## Menú principal
 
-- **Jugar** — inicia una nueva run
-- **Catálogo de mejoras** — vista previa de todos los upgrades disponibles antes de jugar, organizados por categoría con nombre, icono y descripción completa
+- **Jugar** — inicia una nueva run (resetea mejoras)
+- **Ver Mejoras** — catálogo completo de upgrades organizado por categoría, con descripción expandible al hacer click
+- **Cómo Jugar** — tutorial de 6 pasos navegable (← →)
+- **Salir** — cierra el juego
 
 ---
 
@@ -190,47 +198,46 @@ OverSplit/
 ├── scenes/
 │   ├── Main.tscn               # Escena principal de juego
 │   ├── MainMenu.tscn           # Menú principal
-│   ├── Player.tscn             # Jugador + sistema de clones
-│   ├── SwitchTask.tscn         # Tarea interactuable
-│   ├── UpgradeScreen.tscn      # Pantalla de elección de mejoras
+│   ├── Player.tscn             # Jugador base (original + clones)
+│   ├── SwitchTask.tscn         # Tarea interactuable (bomba animada)
+│   ├── UpgradeScreen.tscn      # Pantalla de elección de mejoras (3 cartas)
 │   └── ui/
-│       ├── EfficiencyUI.tscn   # HUD de eficiencia, score, oleada, estrés
-│       ├── PauseMenu.tscn      # Menú de pausa con lista de mejoras
-│       └── UpgradeIconsHUD.tscn # Iconos de upgrades activos
+│       ├── EfficiencyUI.tscn   # HUD principal (eficiencia, score, oleada, estrés)
+│       ├── GameOver.tscn       # Pantalla de Game Over
+│       ├── PauseMenu.tscn      # Menú de pausa con lista de mejoras activas
+│       └── UpgradeIconsHUD.tscn # Iconos de upgrades activos (esquina inferior derecha)
 │
-└── scripts/
-    ├── GameManager.gd          # Autoload — estado global, clones, oleadas, estrés
-    ├── UpgradeManager.gd       # Autoload — catálogo, upgrades activos, efectos
-    ├── AudioManager.gd         # Autoload — efectos de sonido
-    ├── CloneManager.gd         # Gestión de instancias de clones
-    ├── PlayerController.gd     # Movimiento, IA de clones, prioridad de tareas
-    ├── SwitchTask.gd           # Lógica de tarea (barra de progreso, timeout, visual)
-    ├── TaskSpawner.gd          # Spawner de tareas por oleada (cola con delta)
-    ├── Main.gd                 # Inicialización de la escena de juego
-    ├── MainMenu.gd             # Lógica del menú principal y catálogo
-    ├── PauseMenu.gd            # Lógica del menú de pausa
-    ├── EfficiencyUI.gd         # Actualización del HUD
-    ├── UpgradeScreen.gd        # Lógica de cartas de mejora
-    └── UpgradeIconsHUD.gd      # Iconos HUD con tooltip y detalle
-```
-
-### Flujo general
-
-```mermaid
-graph TD
-    GM[GameManager\nwave_started N] -->|N % 3 == 0| UM[UpgradeManager\n_on_wave_started]
-    UM -->|pausa + muestra| US[UpgradeScreen\n3 cartas aleatorias]
-    US -->|elige carta| UM2[UpgradeManager\napply_upgrade]
-    UM2 -->|modifica flags/vars| GM2[GameManager\nget_speed / eficiencia]
-    UM2 -->|signal upgrade_chosen| HUD[UpgradeIconsHUD\nregen iconos]
-    UM2 -->|array active_upgrades| PM[PauseMenu\nlista mejoras]
-    US -->|elige o descarta| RESUME[get_tree.paused = false]
-    GM -->|wave_started| TS[TaskSpawner\ncola de spawn con delta]
-    TS -->|spawn gradual| TASKS[SwitchTask\ntareas en pantalla]
-    TASKS -->|completada| GM
-    TASKS -->|fallida| GM
-    GM -->|stress acumula| DEBUFFS[Debuffs\nvelocidad/timeout/reacción]
-    DEBUFFS -->|stress=5| COLAPSO[Zona de Colapso]
+├── scripts/
+│   ├── GameManager.gd          # Autoload — estado global, oleadas, estrés, colapso
+│   ├── UpgradeManager.gd       # Autoload — catálogo, upgrades activos, efectos
+│   ├── AudioManager.gd         # Autoload — audio procedural + música WAV
+│   ├── CloneManager.gd         # Spawn/eliminación de clones, directivas por click
+│   ├── PlayerController.gd     # Movimiento jugador, IA de clones, interacción
+│   ├── SwitchTask.gd           # Lógica de tarea (progreso, timeout, urgencia, badge)
+│   ├── TaskSpawner.gd          # Spawner de tareas por oleada con cola delta
+│   ├── Main.gd                 # Inicialización de la escena de juego
+│   ├── MainMenu.gd             # Menú principal, catálogo y tutorial
+│   ├── PauseMenu.gd            # Lógica del menú de pausa
+│   ├── GameOver.gd             # Pantalla de Game Over
+│   ├── EfficiencyUI.gd         # Actualización del HUD
+│   ├── UpgradeScreen.gd        # Lógica de cartas de mejora con timer
+│   └── UpgradeIconsHUD.gd      # Iconos HUD con tooltip y panel de detalle
+│
+├── sprites/
+│   ├── Bomba/                  # 21 frames de animación de la bomba
+│   ├── sprite_pj.png           # Frame idle del personaje
+│   ├── sprite_walk_pj.png      # Frame walk 1
+│   ├── sprite_walk_pj2.png     # Frame walk 2
+│   ├── sprite_frames_pj.tres   # SpriteFrames (idle 1f + walk 4f a 8fps)
+│   ├── OVERSPLIT.png           # Logo pixel-art
+│   └── fondo_menu.jpeg         # Ilustración del menú principal
+│
+├── backgrounds/
+│   └── fondo_oversplit.png     # Fondo top-down del área de juego (steampunk)
+│
+└── audio/
+    ├── PaCarlosIntro.wav       # Música del menú (loop)
+    └── PaCarlosFull.wav        # Música del juego (loop)
 ```
 
 ---
@@ -238,30 +245,36 @@ graph TD
 ## Sistemas técnicos destacados
 
 ### Spawn con cola delta (TaskSpawner)
-Las tareas se spawnean de a una cada 0.4s usando `_process(delta)` con un contador interno. Esto asegura que al reanudar después de una pausa (ej: pantalla de mejoras) las tareas aparezcan gradualmente y no todas de golpe.
+Las tareas se spawnean de a una cada 0.4s usando `_process(delta)` con un contador interno. Esto asegura que al reanudar después de una pausa (ej: pantalla de mejoras) las tareas aparezcan gradualmente.
 
 ### Eficiencia con modificadores por upgrade
-`GameManager._recalculate_efficiency()` calcula la base y la pasa por `UpgradeManager.get_efficiency()`, que aplica los modificadores de upgrades como Umbral, Zona de Confort, Ejército Mínimo y Proliferación antes de emitir la señal al HUD.
+`GameManager._recalculate_efficiency()` calcula la base y la pasa por `UpgradeManager.get_efficiency()`, que aplica modificadores de Umbral, Zona de Confort, Ejército Mínimo y Proliferación antes de emitir la señal al HUD.
 
-### MAX_CLONES como variable
+### MAX_CLONES como variable mutable
 `MAX_CLONES` es una variable (no constante) en `GameManager`, permitiendo que upgrades como Ejército Mínimo (3) y Proliferación (8) la modifiquen en runtime. Se resetea a 6 en cada `start_game()`.
 
-### IA de clones con anti-stacking
-Los clones evalúan tareas disponibles considerando cuántos clones ya están asignados, evitando que todos vayan al mismo objetivo. Si un clon es empujado mientras interactúa, mantiene su posición bordeando el objetivo para no perder el rango de interacción.
+### IA de clones con anti-stacking y reservas
+Los clones evalúan tareas disponibles con un sistema de reservas (`task_reservations`) para evitar que todos vayan al mismo objetivo. Cuando un clon lleva el 65% de progreso de una tarea, ya empieza a buscar la siguiente.
 
 ### Sistema de prioridad por click
-Click izquierdo sobre una tarea asigna prioridad; clicks adicionales suman el número de clones a enviar (indicador numérico sobre la tarea). Click derecho quita la prioridad. Los clones suficientes y necesarios se redirigen automáticamente.
+Click izquierdo asigna el clon más cercano disponible a la tarea (indicador numérico ①②③ sobre ella). Click derecho cancela todas las asignaciones. Los clones asignados muestran borde cyan pulsante.
+
+### Audio 100% procedural (SFX)
+Todos los efectos de sonido se generan en tiempo real con `AudioStreamGenerator` usando ondas sine, square y noise. Solo la música usa archivos WAV.
+
+### Colapso emergente (no inmediato)
+Estrés máximo (5) activa Zona de Colapso, pero el Game Over solo ocurre si el estrés se mantiene en 5 durante 10 segundos consecutivos. La barra de colapso sube y baja según el estrés actual, dando margen de recuperación.
 
 ---
 
 ## Instalación y ejecución
 
-1. Tener Godot 4.4+ instalado
+1. Tener **Godot 4.6** instalado
 2. Clonar o descargar el repositorio
 3. Abrir Godot → **Import** → seleccionar `project.godot`
-4. Ejecutar con F5 o el botón Play
+4. Ejecutar con **F5** o el botón Play
 
-> No se requieren plugins ni assets externos. El proyecto usa solo primitivas de Godot y emojis Unicode como iconos.
+> No se requieren plugins ni assets externos. Los SFX usan solo primitivas de Godot. Los iconos de mejoras usan emojis Unicode.
 
 ---
 
@@ -271,11 +284,12 @@ Click izquierdo sobre una tarea asigna prioridad; clicks adicionales suman el n�
 |---|---|
 | v1.0 | Prototipo base: clones, eficiencia, tareas, UI |
 | v2.0 | Sistema de dificultad progresiva |
-| v3.0 | Sistema de sonido |
+| v3.0 | Sistema de sonido procedural |
 | v4.0 | Ajustes de balance, menú básico |
 | v5.0 | IA de clones mejorada, interacción compartida |
 | v6.0 | Sistema de pausa, velocidad de juego, skip oleada |
 | v7.0 | Feedback visual jerárquico en tareas (tamaño, glow, pulso, badge) |
 | v8.0 | Sistema de estrés, colapso progresivo, círculo de reacción en clones |
-| v9.0 beta | Sistema de upgrades roguelite, HUD de iconos, WASD |
-| v10.0 beta | Fixes: spawn acumulado en pausa, upgrades de eficiencia sin efecto, MAX_CLONES como const |
+| v9.0 | Sistema de upgrades roguelite, HUD de iconos, WASD |
+| v10.0 | Fixes: spawn acumulado en pausa, upgrades de eficiencia, MAX_CLONES mutable |
+| v10.2 | Tutorial integrado en menú, catálogo de mejoras en menú, GameOver dinámico, fixes generales |

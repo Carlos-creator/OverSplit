@@ -19,7 +19,9 @@ var _last_dir: Vector2 = Vector2.DOWN
 func _ready() -> void:
 	add_to_group("players")
 	sprite.modulate = color
-	sprite.play("idle_down")
+	sprite.scale = Vector2(0.32, 0.32)
+	sprite.rotation = -PI / 2.0  # Empieza mirando hacia abajo
+	sprite.play("idle")
 	clone_label.text = "P" + str(player_index + 1) if player_index > 0 else "YOU"
 	interact_bar.visible = false
 
@@ -255,27 +257,15 @@ func _find_nearest_any_task(gm: Node) -> Node:
 			best_dist = d
 			best = task
 	return best
-	
+
 func _update_animation(dir: Vector2) -> void:
 	if dir != Vector2.ZERO:
 		_last_dir = dir
 
-	var d := _last_dir
 	var is_moving := dir != Vector2.ZERO
+	sprite.play("walk" if is_moving else "idle")
 
-	var anim := ""
-
-	if d.x != 0 and d.y != 0:
-		var h := "right" if d.x > 0 else "left"
-		var v := "down" if d.y > 0 else "up"
-		anim = v + "_" + h
-	elif d.y < 0:
-		anim = "up"
-	elif d.y > 0:
-		anim = "down"
-	elif d.x > 0:
-		anim = "right"
-	elif d.x < 0:
-		anim = "left"
-
-	sprite.play(("walk_" if is_moving else "idle_") + anim)
+	# Rotación suave hacia la dirección de movimiento
+	if _last_dir != Vector2.ZERO:
+		var target_angle := _last_dir.angle() - PI / 2.0
+		sprite.rotation = lerp_angle(sprite.rotation, target_angle, 0.25)

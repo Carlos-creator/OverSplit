@@ -16,7 +16,7 @@ var _urgency_tween: Tween = null
 var _badge_tween: Tween = null
 
 @onready var border_rect: ColorRect = $BorderRect
-@onready var body: ColorRect = $Body
+@onready var body: AnimatedSprite2D = $Body
 @onready var timer_bar: ProgressBar = $TimerBar
 @onready var interact_bar: ProgressBar = $InteractBar
 @onready var directive_label: Label = $DirectiveLabel
@@ -26,7 +26,6 @@ const BADGE_SYMBOLS: Array[String] = ["①", "②", "③"]
 
 func _ready() -> void:
 	get_node("/root/GameManager").register_task(self)
-	body.color = task_color
 	timer_bar.max_value = timeout
 	timer_bar.value = timeout
 	interact_bar.value = 0
@@ -34,6 +33,7 @@ func _ready() -> void:
 	badge_label.visible = false
 	badge_label.scale = Vector2.ZERO
 	border_rect.color = Color(0, 0, 0, 0)
+	body.play("idle")
 
 func get_time_remaining() -> float:
 	return timeout - _timer
@@ -83,6 +83,7 @@ func _update_base_layer(work_left: float) -> void:
 	var scale_val: float = lerp(0.75, scale_max, work_left)
 	self.scale = Vector2(scale_val, scale_val)
 
+	# Pulso de borde de color cuando no hay directiva
 	if not has_directive:
 		var glow_alpha: float = work_left * (float(work_amount) / 3.0) * 0.65
 		var glow_color: Color = task_color.lightened(0.3)
@@ -93,6 +94,9 @@ func _update_state_layer(time_ratio: float, _work_left: float) -> void:
 	if time_ratio > 0.35 or has_directive:
 		if _urgency_active:
 			_deactivate_urgency()
+		# Volver a idle si estaba en urgency
+		if body.animation == "urgency":
+			body.play("idle")
 		return
 
 	if not _urgency_active:
@@ -107,6 +111,7 @@ func _update_state_layer(time_ratio: float, _work_left: float) -> void:
 
 func _activate_urgency() -> void:
 	_urgency_active = true
+	body.play("urgency")
 	if _urgency_tween:
 		_urgency_tween.kill()
 	_urgency_tween = create_tween().set_loops()
@@ -195,14 +200,17 @@ func _on_timeout() -> void:
 	_play_fail_animation()
 
 func _play_complete_animation() -> void:
-	body.color = Color.LIME_GREEN
+	# Bomba desactivada: se encoge y desaparece
+	body.play("idle")
 	var t := create_tween()
-	t.tween_property(self, "scale", Vector2(1.4, 1.4), 0.15)
-	t.tween_property(self, "modulate:a", 0.0, 0.3)
+	t.tween_property(self, "scale", Vector2(0.05, 0.05), 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	t.tween_property(self, "modulate:a", 0.0, 0.1)
 	t.tween_callback(queue_free)
 
 func _play_fail_animation() -> void:
-	body.color = Color.DARK_RED
+	# Bomba explotó: animación de explosión, se agranda y desaparece
+	body.play("explode")
+	body.animation_finished.connect(func(): queue_free(), CONNECT_ONE_SHOT)
 	var t := create_tween()
-	t.tween_property(self, "modulate:a", 0.0, 0.25)
-	t.tween_callback(queue_free)
+	t.tween_property(self, "scale", Vector2(1.8, 1.8), 0.15)
+	t.tween_property(self, "modulate:a", 0.0, 0.35)
