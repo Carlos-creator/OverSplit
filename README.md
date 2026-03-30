@@ -285,7 +285,7 @@ Estrés máximo (5) activa Zona de Colapso, pero el Game Over solo ocurre si el 
 
 ## Instalación y ejecución
 
-> **Juega directamente en el navegador:** [unifroxt.itch.io/oversplit](https://unifroxt.itch.io/oversplit)
+> **Descargar en itch.io:** [unifroxt.itch.io/oversplit](https://unifroxt.itch.io/oversplit)
 
 O para ejecutar localmente desde el código fuente:
 
