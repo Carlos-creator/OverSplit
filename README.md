@@ -2,7 +2,8 @@
 
 **Versión:** v11.0  
 **Motor:** Godot 4.6 (GDScript)  
-**Género:** Puzzle / Gestión / Roguelite
+**Género:** Puzzle / Gestión / Roguelite  
+**Jugar en itch.io:** https://unifroxt.itch.io/oversplit
 
 ---
 
@@ -283,6 +284,10 @@ Estrés máximo (5) activa Zona de Colapso, pero el Game Over solo ocurre si el 
 ---
 
 ## Instalación y ejecución
+
+> **Juega directamente en el navegador:** [unifroxt.itch.io/oversplit](https://unifroxt.itch.io/oversplit)
+
+O para ejecutar localmente desde el código fuente:
 
 1. Tener **Godot 4.6** instalado
 2. Clonar o descargar el repositorio
